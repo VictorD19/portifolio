@@ -1,0 +1,33 @@
+---
+import type { Lang } from '../i18n/config';
+import { languages, getLocalizedPath } from '../i18n/config';
+
+interface Props {
+  currentLang: Lang;
+  currentPath: string;
+}
+
+const { currentLang, currentPath } = Astro.props;
+---
+
+<nav class="flex items-center gap-1" aria-label="Language switcher">
+  {Object.entries(languages).map(([lang, label]) => {
+    const l = lang as Lang;
+    const href = getLocalizedPath(currentPath, l);
+    const isActive = l === currentLang;
+    return (
+      <a
+        href={href}
+        aria-label={`Switch to ${label}`}
+        class={[
+          'px-2 py-1 text-xs font-mono rounded transition-colors duration-200',
+          isActive
+            ? 'text-accent border-b-2 border-accent font-semibold'
+            : 'text-text-secondary hover:text-text-primary border-b-2 border-transparent',
+        ].join(' ')}
+      >
+        {lang.toUpperCase()}
+      </a>
+    );
+  })}
+</nav>

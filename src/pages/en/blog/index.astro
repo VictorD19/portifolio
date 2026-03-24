@@ -8,6 +8,10 @@ import { getReadingTime } from '../../../lib/utils';
 
 const lang = 'en';
 
+function idToSlug(id: string): string {
+  return id.replace(/(pt|en|es)$/, '');
+}
+
 let posts = await getCollection('blog', ({ data }) => {
   return data.lang === 'en' && !data.draft;
 });
@@ -45,7 +49,7 @@ posts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post, index) => {
           const postLang = post.data.lang;
-          const slug = post.id.replace(/\.(pt|en|es)$/, '');
+          const slug = idToSlug(post.id);
           const readingTime = getReadingTime(post.body ?? '');
           return (
             <ScrollAnimation animation="slide-up" delay={index * 100}>

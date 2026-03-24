@@ -13,17 +13,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return data.lang === 'pt' && !data.draft;
   });
 
-  const paths: { params: { slug: string }; props: { post: (typeof ptPosts)[0]; isFallback: boolean } }[] = [];
+  const paths: {
+    params: { slug: string };
+    props: { post: (typeof ptPosts)[0]; isFallback: boolean };
+  }[] = [];
 
   for (const post of esPosts) {
-    const slug = post.id.replace(/\.(pt|en|es)$/, '');
-    paths.push({ params: { slug }, props: { post, isFallback: false } });
+    paths.push({
+      params: { slug: post.id.replace(/(pt|en|es)$/, '') },
+      props: { post, isFallback: false },
+    });
   }
 
-  const esSlugs = new Set(esPosts.map((p) => p.id.replace(/\.(pt|en|es)$/, '')));
+  const esSlugs = new Set(esPosts.map((p) => p.id.replace(/(pt|en|es)$/, '')));
 
   for (const post of ptPosts) {
-    const slug = post.id.replace(/\.(pt|en|es)$/, '');
+    const slug = post.id.replace(/(pt|en|es)$/, '');
     if (!esSlugs.has(slug)) {
       paths.push({ params: { slug }, props: { post, isFallback: true } });
     }
@@ -39,19 +44,16 @@ const allPosts = await getCollection('blog', ({ data }) => {
   return (data.lang === 'es' || data.lang === 'pt') && !data.draft;
 });
 
-const currentSlug = post.id.replace(/\.(pt|en|es)$/, '');
+const currentSlug = post.id.replace(/(pt|en|es)$/, '');
 
 const relatedPosts = allPosts
-  .filter((p) => {
-    const pSlug = p.id.replace(/\.(pt|en|es)$/, '');
-    return pSlug !== currentSlug && p.data.category === post.data.category;
-  })
+  .filter((p) => p.id.replace(/(pt|en|es)$/, '') !== currentSlug && p.data.category === post.data.category)
   .slice(0, 2)
   .map((p) => ({
-    slug: p.id.replace(/\.(pt|en|es)$/, ''),
+    slug: p.id.replace(/(pt|en|es)$/, ''),
     title: p.data.title,
     category: p.data.category,
-    lang: p.data.lang === 'es' ? 'es' : 'pt',
+    lang: (p.data.lang === 'es' ? 'es' : 'pt') as string,
   }));
 ---
 

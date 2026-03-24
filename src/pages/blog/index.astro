@@ -8,6 +8,13 @@ import { getReadingTime } from '../../lib/utils';
 
 const lang = 'pt';
 
+// In Astro 5 glob loader, IDs are github-slugified:
+// 'cve-2025-29927.pt.mdx' -> 'cve-2025-29927pt'
+// Strip trailing lang code to get clean URL slug.
+function idToSlug(id: string): string {
+  return id.replace(/(pt|en|es)$/, '');
+}
+
 const allPosts = await getCollection('blog', ({ data }) => {
   return data.lang === lang && !data.draft;
 });
@@ -34,8 +41,7 @@ const posts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTim
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post, index) => {
-          // In Astro 5 glob loader, id is 'filename-without-extension', e.g. 'cve-2025-29927.pt'
-          const slug = post.id.replace(/\.(pt|en|es)$/, '');
+          const slug = idToSlug(post.id);
           const readingTime = getReadingTime(post.body ?? '');
           return (
             <ScrollAnimation animation="slide-up" delay={index * 100}>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://victorbertram.dev/sitemap-index.xml

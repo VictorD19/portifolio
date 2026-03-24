@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+import SEOHead from '../components/SEOHead.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang } from '../i18n/config';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  ogImage?: string;
+  type?: 'website' | 'article';
+  publishedDate?: string;
+}
+
+const {
+  title,
+  description,
+  lang,
+  ogImage,
+  type = 'website',
+  publishedDate,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <SEOHead
+      title={title}
+      description={description}
+      lang={lang}
+      ogImage={ogImage}
+      type={type}
+      publishedDate={publishedDate}
+    />
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="min-h-screen bg-navy text-text-primary font-sans antialiased">
+    <!-- Skip to main content for accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-navy focus:font-semibold focus:rounded focus:outline-none"
+    >
+      Skip to main content
+    </a>
+
+    <Navbar lang={lang} />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+  </body>
+</html>

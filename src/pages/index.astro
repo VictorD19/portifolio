@@ -1,18 +1,37 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getLangFromUrl, t } from '../i18n/config';
+
+const lang = getLangFromUrl(Astro.url);
+const title = `Victor Bertram – ${t(lang, 'hero.headline')}`;
+const description = t(lang, 'hero.bio');
 ---
 
-<!doctype html>
-<html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Victor Bertram – Desenvolvedor Full Stack</title>
-  </head>
-  <body>
-    <main>
-      <h1>Victor Bertram</h1>
-      <p>Portfolio em construção...</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title={title} description={description} lang={lang}>
+  <section class="flex flex-col items-center justify-center min-h-screen px-6 text-center">
+    <p class="text-accent font-mono text-sm mb-4">{t(lang, 'hero.greeting')}</p>
+    <h1 class="text-5xl md:text-7xl font-extrabold text-text-primary mb-6">
+      Victor Bertram
+    </h1>
+    <h2 class="text-3xl md:text-5xl font-bold text-text-secondary mb-8">
+      {t(lang, 'hero.headline')}
+    </h2>
+    <p class="max-w-2xl text-text-secondary text-lg mb-10">
+      {t(lang, 'hero.bio')}
+    </p>
+    <div class="flex gap-4 flex-wrap justify-center">
+      <a
+        href="/projects"
+        class="px-6 py-3 bg-accent text-navy font-semibold rounded hover:bg-accent/90 transition-colors"
+      >
+        {t(lang, 'hero.cta_projects')}
+      </a>
+      <a
+        href="/contact"
+        class="px-6 py-3 border border-accent text-accent font-semibold rounded hover:bg-accent/10 transition-colors"
+      >
+        {t(lang, 'hero.cta_contact')}
+      </a>
+    </div>
+  </section>
+</BaseLayout>

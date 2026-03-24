@@ -1,0 +1,58 @@
+---
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('blog', ({ data }) => {
+    return data.lang === 'pt' && !data.draft;
+  });
+
+  return posts.map((post) => {
+    // id is like 'cve-2025-29927.pt' (no file extension in Astro 5 glob loader)
+    const slug = post.id.replace(/\.(pt|en|es)$/, '');
+    return {
+      params: { slug },
+      props: { post },
+    };
+  });
+};
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.lang === 'pt' && !data.draft;
+});
+
+const currentSlug = post.id.replace(/\.(pt|en|es)$/, '');
+
+const relatedPosts = allPosts
+  .filter((p) => {
+    const pSlug = p.id.replace(/\.(pt|en|es)$/, '');
+    return pSlug !== currentSlug && p.data.category === post.data.category;
+  })
+  .slice(0, 2)
+  .map((p) => ({
+    slug: p.id.replace(/\.(pt|en|es)$/, ''),
+    title: p.data.title,
+    category: p.data.category,
+    lang: 'pt',
+  }));
+---
+
+<BlogPostLayout
+  title={post.data.title}
+  description={post.data.description}
+  date={post.data.date}
+  tags={post.data.tags}
+  category={post.data.category}
+  image={post.data.image}
+  lang="pt"
+  headings={headings}
+  rawContent={post.body ?? ''}
+  relatedPosts={relatedPosts}
+  slug={currentSlug}
+>
+  <Content />
+</BlogPostLayout>

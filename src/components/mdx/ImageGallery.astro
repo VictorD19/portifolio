@@ -1,0 +1,30 @@
+---
+interface ImageItem {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  images: ImageItem[];
+}
+
+const { images } = Astro.props;
+---
+
+<div class="my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 not-prose">
+  {images.map((img) => (
+    <figure class="overflow-hidden rounded-lg border border-border bg-navy-light">
+      <img
+        src={img.src}
+        alt={img.alt}
+        class="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+        loading="lazy"
+      />
+      {img.alt && (
+        <figcaption class="px-3 py-2 text-xs text-text-secondary text-center">
+          {img.alt}
+        </figcaption>
+      )}
+    </figure>
+  ))}
+</div>

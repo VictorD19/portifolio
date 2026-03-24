@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import ScrollAnimation from '../../../components/ScrollAnimation.astro';
+import { getCollection } from 'astro:content';
+import { t } from '../../../i18n/config';
+import { getReadingTime } from '../../../lib/utils';
+
+const lang = 'es';
+
+let posts = await getCollection('blog', ({ data }) => {
+  return data.lang === 'es' && !data.draft;
+});
+
+const useFallback = posts.length === 0;
+if (useFallback) {
+  posts = await getCollection('blog', ({ data }) => {
+    return data.lang === 'pt' && !data.draft;
+  });
+}
+
+posts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout
+  title={`Blog | Victor Bertram`}
+  description={t(lang, 'blog_page.title')}
+  lang={lang}
+>
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <ScrollAnimation animation="slide-up">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-text-primary mb-4">
+        {t(lang, 'blog_page.title')}
+      </h1>
+      {useFallback && (
+        <p class="text-sm text-yellow-400 mb-4">{t(lang, 'blog_page.fallback')}</p>
+      )}
+    </ScrollAnimation>
+
+    {posts.length === 0 ? (
+      <ScrollAnimation animation="fade-in">
+        <p class="text-text-secondary text-center py-20">{t(lang, 'blog_page.empty')}</p>
+      </ScrollAnimation>
+    ) : (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post, index) => {
+          const postLang = post.data.lang;
+          const slug = post.id.replace(/\.(pt|en|es)\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, '');
+          const readingTime = getReadingTime(post.body ?? '');
+          return (
+            <ScrollAnimation animation="slide-up" delay={index * 100}>
+              <BlogCard
+                slug={slug}
+                title={post.data.title}
+                description={post.data.description}
+                category={post.data.category}
+                tags={post.data.tags}
+                readingTime={readingTime}
+                publishedDate={post.data.date}
+                lang={postLang === 'es' ? 'es' : 'pt'}
+                class="w-full"
+              />
+            </ScrollAnimation>
+          );
+        })}
+      </div>
+    )}
+  </section>
+</BaseLayout>

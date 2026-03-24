@@ -10,7 +10,8 @@ Portfolio pessoal para Victor Bertram, Senior Full Stack Developer. Serve 3 prop
 - **UI interativa:** React (Astro Islands)
 - **Estilização:** Tailwind CSS
 - **Blog:** MDX (arquivos no repositório)
-- **i18n:** PT (padrão) / EN / ES — com `astro-i18n` ou solução nativa do Astro
+- **i18n:** PT (padrão) / EN / ES — usando Astro i18n routing nativo (`src/pages/[lang]/...`)
+- **Busca blog:** Pagefind (indexação estática no build, zero backend)
 - **Hosting:** Cloudflare Pages
 - **Animações:** Intersection Observer para scroll triggers (fade-in, slide-up, scale-in)
 
@@ -24,7 +25,7 @@ Portfolio pessoal para Victor Bertram, Senior Full Stack Developer. Serve 3 prop
 - **Cards/Superfícies:** #112240
 - **Bordas:** #1e3a5f
 - **Background profundo (footer):** #020c1b
-- **Tipografia:** System font stack (Inter ou similar)
+- **Tipografia:** Inter (web font via Fontsource, com system font stack como fallback)
 - **Micro-interações:** Hover effects sutis, transições suaves, scroll triggers em todas as seções
 
 ## Estrutura de Rotas
@@ -42,8 +43,16 @@ Todas as rotas em inglês. Conteúdo traduzido por idioma.
 | `/blog/[slug]` | Artigo MDX completo |
 | `/services` | Serviços oferecidos |
 | `/contact` | Formulário → WhatsApp |
+| `/en/projects` | Projects (EN) |
+| `/en/blog` | Blog (EN) |
+| `/en/services` | Services (EN) |
+| `/en/contact` | Contact (EN) |
+| `/es/projects` | Proyectos (ES) |
+| `/es/blog` | Blog (ES) |
+| `/es/services` | Servicios (ES) |
+| `/es/contact` | Contacto (ES) |
 
-Prefixo de idioma: `/pt/...` (padrão, sem prefixo), `/en/...`, `/es/...`.
+Prefixo de idioma: PT sem prefixo (padrão), `/en/...`, `/es/...`. Todas as sub-rotas recebem o prefixo de idioma. Nomes das rotas sempre em inglês (intencional — URLs consistentes independente do idioma).
 
 ## Páginas
 
@@ -73,16 +82,17 @@ Single page com seções resumidas que linkam para páginas dedicadas.
 
 **Seção 3 — Projetos (carrossel):**
 - Numeração "02. Projetos"
-- Carrossel horizontal com 5 cards visíveis
-- Setas de navegação (← →) + drag para scroll
+- Carrossel horizontal: 5 cards visíveis (desktop), 3 (tablet), 1.5 (mobile)
+- Setas de navegação (← →) no desktop, swipe touch no mobile, drag para scroll
+- Não faz loop — para nas bordas. Sem autoplay.
 - Link "Ver todos →" para `/projects`
 - Cada card: imagem/ícone de capa, título, descrição curta, tags de tecnologia
 - Animação: slide-up no scroll
 
 **Seção 4 — Blog (carrossel):**
 - Numeração "03. Blog"
-- Mesmo formato de carrossel (5 visíveis)
-- Setas de navegação + drag
+- Mesmo formato de carrossel (5 desktop, 3 tablet, 1.5 mobile, sem loop, sem autoplay)
+- Setas no desktop, swipe touch no mobile
 - Link "Todos os artigos →" para `/blog`
 - Cada card: cor de categoria, ícone, título, categoria + tempo de leitura, tags
 - Animação: fade-in no scroll
@@ -122,7 +132,7 @@ Single page com seções resumidas que linkam para páginas dedicadas.
 
 - Lista de artigos (cards no estilo do carrossel)
 - Filtro por tags/categorias
-- Busca por texto
+- Busca por texto (Pagefind — indexação estática no build, UI integrada)
 - Cada card: imagem de capa, título, resumo, data, tempo de leitura, tags
 
 ### Blog Post (`/blog/[slug]`)
@@ -143,9 +153,12 @@ Single page com seções resumidas que linkam para páginas dedicadas.
 ### Contact (`/contact`)
 
 - Formulário: nome, email, assunto, mensagem
-- Ao clicar "Enviar", monta mensagem formatada e redireciona para WhatsApp:
+- Validação client-side: nome e mensagem obrigatórios, email com formato válido
+- Ao clicar "Enviar", monta mensagem formatada e URL-encoded, redireciona para WhatsApp:
   ```
-  wa.me/5549998218294?text=
+  https://wa.me/5549998218294?text={encodeURIComponent(mensagem_formatada)}
+
+  Mensagem formatada:
   Olá Victor!
 
   Nome: {nome}
@@ -161,10 +174,26 @@ Single page com seções resumidas que linkam para páginas dedicadas.
 
 - 3 idiomas: Português (padrão), English, Español
 - PT sem prefixo na URL, EN com `/en/`, ES com `/es/`
+- Implementação: Astro i18n routing nativo (`src/pages/[lang]/...`)
 - Seletor de idioma na navbar (top bar) e no footer
-- Arquivos de tradução para textos estáticos (labels, menus, CTAs)
+- Arquivos de tradução para textos estáticos em `src/i18n/`: `pt.json`, `en.json`, `es.json`
 - Conteúdo MDX do blog: um arquivo por idioma (`post-slug.pt.mdx`, `post-slug.en.mdx`, `post-slug.es.mdx`)
-- Projetos: dados em JSON/YAML com campos traduzidos
+  - **Fallback:** se tradução não existir, exibe versão PT com aviso "Artigo disponível apenas em português"
+  - Conteúdo EN/ES será gerado via IA (Victor tem inglês básico e espanhol fluente)
+- Projetos: arquivo `src/data/projects.ts` com schema tipado:
+  ```ts
+  {
+    slug: string
+    image: string
+    tech: string[]
+    links: { github?: string, demo?: string }
+    translations: {
+      pt: { title, description, problem, solution, result }
+      en: { title, description, problem, solution, result }
+      es: { title, description, problem, solution, result }
+    }
+  }
+  ```
 
 ## Componentes Compartilhados
 
@@ -186,6 +215,29 @@ Single page com seções resumidas que linkam para páginas dedicadas.
 - Structured data (JSON-LD) para Person e BlogPosting
 - URLs canônicas com hreflang para i18n
 - Imagens otimizadas (Astro Image)
+
+## Responsividade
+
+Breakpoints (Tailwind defaults):
+- **Mobile:** < 640px — 1 coluna, navbar com hamburger, carrossel 1.5 cards, footer empilhado
+- **Tablet:** 640px–1024px — 2 colunas, carrossel 3 cards, footer 2x2
+- **Desktop:** > 1024px — layout completo, carrossel 5 cards, footer 4 colunas
+
+## Acessibilidade
+
+- Navegação por teclado em todos os elementos interativos
+- ARIA labels em ícones e botões sem texto
+- Foco visível (outline) em elementos interativos
+- Alt text em todas as imagens
+- Contraste: #64ffda sobre #0a192f = 8.5:1 (passa AA e AAA). Textos pequenos em #8892b0 sobre #0a192f = 4.6:1 (passa AA)
+- Skip to content link
+- Carrossel acessível via teclado (setas)
+
+## Estados Vazios
+
+- **Blog sem posts:** Mensagem "Em breve novos artigos" + CTA para seguir no LinkedIn
+- **Projetos sem match no filtro:** "Nenhum projeto com essa tecnologia" + botão limpar filtro
+- **Carrossel com < 5 itens:** Cards se expandem para preencher, setas desabilitadas
 
 ## Performance
 

@@ -1,0 +1,70 @@
+---
+interface Props {
+  animation?: 'fade-in' | 'slide-up' | 'scale-in';
+  class?: string;
+  delay?: number;
+}
+
+const {
+  animation = 'fade-in',
+  class: className = '',
+  delay = 0,
+} = Astro.props;
+---
+
+<div
+  data-animate={animation}
+  class={`data-animate ${className}`}
+  style={delay ? `transition-delay: ${delay}ms` : undefined}
+>
+  <slot />
+</div>
+
+<script>
+  const observerOptions: IntersectionObserverInit = {
+    root: null,
+    rootMargin: '0px 0px -80px 0px',
+    threshold: 0.1,
+  };
+
+  const animationClasses: Record<string, string> = {
+    'fade-in': 'animate-fade-in',
+    'slide-up': 'animate-slide-up',
+    'scale-in': 'animate-scale-in',
+  };
+
+  function setupObserver() {
+    const elements = document.querySelectorAll<HTMLElement>('[data-animate]');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          const animationType = el.dataset.animate ?? 'fade-in';
+          const animClass = animationClasses[animationType] ?? 'animate-fade-in';
+          el.classList.add(animClass);
+          observer.unobserve(el);
+        }
+      });
+    }, observerOptions);
+
+    elements.forEach((el) => observer.observe(el));
+  }
+
+  // Run on initial load
+  setupObserver();
+
+  // Re-run after view transitions if Astro view transitions are used
+  document.addEventListener('astro:page-load', setupObserver);
+</script>
+
+<style>
+  [data-animate] {
+    opacity: 0;
+  }
+  [data-animate].animate-fade-in,
+  [data-animate].animate-slide-up,
+  [data-animate].animate-scale-in {
+    opacity: 1;
+  }
+</style>

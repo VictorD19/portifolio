@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t } from '../../i18n/config';
+import HeroSection from '../../components/home/HeroSection.astro';
+import AboutSection from '../../components/home/AboutSection.astro';
+import ProjectsSection from '../../components/home/ProjectsSection.astro';
+import BlogSection from '../../components/home/BlogSection.astro';
+import CTASection from '../../components/home/CTASection.astro';
+
+const lang = 'es' as const;
+const title = `Victor Bertram – ${t(lang, 'hero.headline')}`;
+const description = t(lang, 'hero.bio');
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <HeroSection lang={lang} />
+  <AboutSection lang={lang} />
+  <ProjectsSection lang={lang} />
+  <BlogSection lang={lang} />
+  <CTASection lang={lang} />
+</BaseLayout>

@@ -1,0 +1,77 @@
+---
+import BlogPostLayout from '../../../layouts/BlogPostLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { t } from '../../../i18n/config';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const enPosts = await getCollection('blog', ({ data }) => {
+    return data.lang === 'en' && !data.draft;
+  });
+
+  const ptPosts = await getCollection('blog', ({ data }) => {
+    return data.lang === 'pt' && !data.draft;
+  });
+
+  const paths: { params: { slug: string }; props: { post: typeof ptPosts[0]; isFallback: boolean } }[] = [];
+
+  for (const post of enPosts) {
+    const slug = post.id.replace(/\.(en)\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, '');
+    paths.push({ params: { slug }, props: { post, isFallback: false } });
+  }
+
+  const enSlugs = new Set(enPosts.map((p) => p.id.replace(/\.(en)\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, '')));
+  for (const post of ptPosts) {
+    const slug = post.id.replace(/\.(pt)\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, '');
+    if (!enSlugs.has(slug)) {
+      paths.push({ params: { slug }, props: { post, isFallback: true } });
+    }
+  }
+
+  return paths;
+};
+
+const { post, isFallback } = Astro.props;
+const { Content, headings } = await render(post);
+
+const allPosts = await getCollection('blog', ({ data }) => {
+  return (data.lang === 'en' || data.lang === 'pt') && !data.draft;
+});
+
+const currentSlug = post.id.replace(/\.(pt|en)\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, '');
+
+const relatedPosts = allPosts
+  .filter((p) => {
+    const pSlug = p.id.replace(/\.(pt|en)\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, '');
+    return pSlug !== currentSlug && p.data.category === post.data.category;
+  })
+  .slice(0, 2)
+  .map((p) => ({
+    slug: p.id.replace(/\.(pt|en)\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, ''),
+    title: p.data.title,
+    category: p.data.category,
+    lang: p.data.lang === 'en' ? 'en' : 'pt',
+  }));
+---
+
+{isFallback && (
+  <div class="bg-yellow-950/40 border-b border-yellow-800 text-yellow-300 text-sm text-center py-2 px-4">
+    {t('en', 'blog_page.fallback')}
+  </div>
+)}
+
+<BlogPostLayout
+  title={post.data.title}
+  description={post.data.description}
+  date={post.data.date}
+  tags={post.data.tags}
+  category={post.data.category}
+  image={post.data.image}
+  lang="en"
+  headings={headings}
+  rawContent={post.body ?? ''}
+  relatedPosts={relatedPosts}
+  slug={currentSlug}
+>
+  <Content />
+</BlogPostLayout>

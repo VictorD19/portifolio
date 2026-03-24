@@ -1,0 +1,30 @@
+---
+import ProjectLayout from '../../../layouts/ProjectLayout.astro';
+import { projects, getProjectBySlug } from '../../../data/projects';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return projects.map((p) => ({
+    params: { slug: p.slug },
+  }));
+};
+
+const { slug } = Astro.params;
+const lang = 'es' as const;
+const project = getProjectBySlug(slug!, lang);
+
+if (!project) return Astro.redirect('/es/projects');
+---
+
+<ProjectLayout
+  title={project.title}
+  description={project.description}
+  problem={project.problem}
+  solution={project.solution}
+  result={project.result}
+  tech={project.tech}
+  image={project.image}
+  lang={lang}
+  links={project.links}
+  slug={slug!}
+/>

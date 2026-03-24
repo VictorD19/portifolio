@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ProjectFilter from '../../../components/ProjectFilter.tsx';
+import ScrollAnimation from '../../../components/ScrollAnimation.astro';
+import { t } from '../../../i18n/config';
+import { getProjectsByLang } from '../../../data/projects';
+
+const lang = 'es' as const;
+const projects = getProjectsByLang(lang);
+
+const projectData = projects.map((p) => ({
+  slug: p.slug,
+  title: p.title,
+  description: p.description,
+  tech: p.tech,
+  image: p.image,
+  lang,
+}));
+
+const title = `${t(lang, 'projects_page.title')} | Victor Bertram`;
+const description = t(lang, 'hero.bio');
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <ScrollAnimation animation="slide-up">
+      <div class="mb-12">
+        <p class="text-accent font-mono text-sm mb-2">~/projects</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-text-primary mb-4">
+          {t(lang, 'projects_page.title')}
+        </h1>
+      </div>
+    </ScrollAnimation>
+
+    <ProjectFilter
+      client:load
+      projects={projectData}
+      filterAllLabel={t(lang, 'projects_page.filter_all')}
+      emptyLabel={t(lang, 'projects_page.empty')}
+      clearFilterLabel={t(lang, 'projects_page.clear_filter')}
+      lang={lang}
+    />
+  </section>
+</BaseLayout>

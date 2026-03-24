@@ -1,0 +1,148 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { Lang } from '../i18n/config';
+import { t, getLocalizedPath } from '../i18n/config';
+
+interface Props {
+  title: string;
+  description: string;
+  problem: string;
+  solution: string;
+  result: string;
+  tech: string[];
+  image?: string;
+  lang: Lang;
+  links?: {
+    github?: string;
+    live?: string;
+  };
+  slug: string;
+}
+
+const {
+  title,
+  description,
+  problem,
+  solution,
+  result,
+  tech,
+  image,
+  lang,
+  links,
+  slug,
+} = Astro.props;
+---
+
+<BaseLayout title={`${title} | Victor Bertram`} description={description} lang={lang}>
+  <!-- Banner -->
+  <section class="relative h-64 md:h-80 bg-navy-dark overflow-hidden">
+    {image ? (
+      <img
+        src={image}
+        alt={title}
+        class="w-full h-full object-cover opacity-50"
+        loading="eager"
+      />
+    ) : (
+      <div class="flex items-center justify-center h-full text-8xl opacity-10 select-none">
+        {'</>'}
+      </div>
+    )}
+    <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
+
+    <!-- Banner content -->
+    <div class="absolute bottom-0 left-0 right-0 max-w-4xl mx-auto px-6 pb-8">
+      <div class="flex flex-wrap gap-2 mb-3">
+        {tech.slice(0, 5).map((tag) => (
+          <span class="px-2 py-0.5 text-xs font-mono text-accent bg-accent/10 border border-accent/20 rounded">
+            {tag}
+          </span>
+        ))}
+      </div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-text-primary mb-2">{title}</h1>
+      <p class="text-text-secondary text-lg">{description}</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <div class="max-w-4xl mx-auto px-6 py-16">
+    <!-- Links -->
+    {(links?.github || links?.live) && (
+      <div class="flex gap-4 mb-12">
+        {links.github && (
+          <a
+            href={links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-text-primary border border-border rounded-lg hover:border-accent/40 hover:text-accent transition-colors duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+            </svg>
+            GitHub
+          </a>
+        )}
+        {links.live && (
+          <a
+            href={links.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-navy bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+            </svg>
+            Live Demo
+          </a>
+        )}
+      </div>
+    )}
+
+    <!-- Case study sections -->
+    <div class="flex flex-col gap-12">
+      <!-- Problem -->
+      <div class="relative pl-6 border-l-2 border-accent/30">
+        <h2 class="text-xl font-bold text-accent mb-3">{t(lang, 'projects_page.problem')}</h2>
+        <p class="text-text-secondary leading-relaxed">{problem}</p>
+      </div>
+
+      <!-- Solution -->
+      <div class="relative pl-6 border-l-2 border-border">
+        <h2 class="text-xl font-bold text-text-primary mb-3">{t(lang, 'projects_page.solution')}</h2>
+        <p class="text-text-secondary leading-relaxed">{solution}</p>
+      </div>
+
+      <!-- Result -->
+      <div class="relative pl-6 border-l-2 border-accent/60">
+        <h2 class="text-xl font-bold text-accent mb-3">{t(lang, 'projects_page.result')}</h2>
+        <p class="text-text-secondary leading-relaxed">{result}</p>
+      </div>
+    </div>
+
+    <!-- All tech tags -->
+    <div class="mt-12 pt-12 border-t border-border">
+      <h3 class="text-sm font-mono text-text-secondary uppercase tracking-wider mb-4">Stack</h3>
+      <div class="flex flex-wrap gap-2">
+        {tech.map((tag) => (
+          <span class="px-3 py-1.5 text-sm font-mono text-accent bg-accent/10 border border-accent/20 rounded-lg">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-12">
+      <a
+        href={getLocalizedPath('/projects', lang)}
+        class="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-accent transition-colors duration-200"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        {lang === 'en' ? 'Back to Projects' : lang === 'es' ? 'Volver a Proyectos' : 'Voltar para Projetos'}
+      </a>
+    </div>
+  </div>
+</BaseLayout>

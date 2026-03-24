@@ -1,0 +1,87 @@
+---
+import type { Lang } from '../../i18n/config';
+import { t } from '../../i18n/config';
+import ScrollAnimation from '../ScrollAnimation.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const techStack = [
+  'TypeScript', 'Node.js', 'React', 'Next.js', 'Astro',
+  'NestJS', 'PostgreSQL', 'Redis', 'Docker', 'Kubernetes',
+  'React Native', 'MongoDB', 'RabbitMQ', 'AWS', 'OpenAI',
+];
+
+const metrics = [
+  { value: '5+', labelPt: 'Anos de experiência', labelEn: 'Years of experience', labelEs: 'Años de experiencia' },
+  { value: '60%', labelPt: 'Redução de latência', labelEn: 'Latency reduction', labelEs: 'Reducción de latencia' },
+  { value: '70%', labelPt: 'Otimização de queries', labelEn: 'Query optimization', labelEs: 'Optimización de queries' },
+  { value: '40%', labelPt: 'Menos incidentes', labelEn: 'Fewer incidents', labelEs: 'Menos incidentes' },
+];
+
+const metricLabel = (m: typeof metrics[0]) =>
+  lang === 'en' ? m.labelEn : lang === 'es' ? m.labelEs : m.labelPt;
+---
+
+<section class="py-24 max-w-6xl mx-auto px-6" aria-labelledby="about-heading">
+  <ScrollAnimation animation="fade-in">
+    <div class="flex items-center gap-4 mb-12">
+      <span class="text-accent font-mono text-sm">01.</span>
+      <h2 id="about-heading" class="text-3xl md:text-4xl font-bold text-text-primary">
+        {t(lang, 'about.title')}
+      </h2>
+      <div class="flex-1 h-px bg-border max-w-xs" aria-hidden="true"></div>
+    </div>
+  </ScrollAnimation>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <!-- Bio + metrics -->
+    <ScrollAnimation animation="fade-in" delay={100}>
+      <div class="flex flex-col gap-6">
+        <p class="text-text-secondary text-lg leading-relaxed">
+          {t(lang, 'about.bio')}
+        </p>
+
+        <!-- Metrics -->
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          {metrics.map((m) => (
+            <div class="p-4 bg-navy-light rounded-lg border border-border">
+              <div class="text-2xl font-extrabold text-accent mb-1">{m.value}</div>
+              <div class="text-xs text-text-secondary">{metricLabel(m)}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </ScrollAnimation>
+
+    <!-- Photo placeholder + tech stack -->
+    <ScrollAnimation animation="slide-up" delay={200}>
+      <div class="flex flex-col gap-6">
+        <!-- Photo placeholder -->
+        <div
+          class="w-full aspect-square max-w-xs mx-auto lg:mx-0 rounded-xl bg-navy-light border border-border flex items-center justify-center overflow-hidden"
+          aria-label="Victor Bertram photo"
+        >
+          <div class="text-center text-text-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 mx-auto mb-3 opacity-30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-xs font-mono opacity-40">Victor Bertram</span>
+          </div>
+        </div>
+
+        <!-- Tech stack tags -->
+        <div class="flex flex-wrap gap-2">
+          {techStack.map((tech) => (
+            <span class="px-3 py-1 text-xs font-mono text-accent bg-accent/10 border border-accent/20 rounded-full">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    </ScrollAnimation>
+  </div>
+</section>

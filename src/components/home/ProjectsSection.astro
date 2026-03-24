@@ -1,0 +1,56 @@
+---
+import type { Lang } from '../../i18n/config';
+import { t, getLocalizedPath } from '../../i18n/config';
+import ScrollAnimation from '../ScrollAnimation.astro';
+import Carousel from '../Carousel.tsx';
+import ProjectCard from '../ProjectCard.astro';
+import { getFeaturedProjects } from '../../data/projects';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const featuredProjects = getFeaturedProjects(lang);
+---
+
+<section class="py-24 bg-navy-dark/40" aria-labelledby="projects-heading">
+  <div class="max-w-6xl mx-auto px-6">
+    <ScrollAnimation animation="slide-up">
+      <div class="flex items-center justify-between mb-12">
+        <div class="flex items-center gap-4">
+          <span class="text-accent font-mono text-sm">02.</span>
+          <h2 id="projects-heading" class="text-3xl md:text-4xl font-bold text-text-primary">
+            {t(lang, 'sections.projects')}
+          </h2>
+          <div class="hidden sm:block flex-1 h-px bg-border max-w-xs" aria-hidden="true"></div>
+        </div>
+        <a
+          href={getLocalizedPath('/projects', lang)}
+          class="text-sm text-accent hover:text-accent/80 transition-colors flex items-center gap-1 shrink-0"
+        >
+          {t(lang, 'sections.view_all_projects')}
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </ScrollAnimation>
+
+    <ScrollAnimation animation="slide-up" delay={150}>
+      <Carousel client:visible label={t(lang, 'sections.projects')}>
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            slug={project.slug}
+            title={project.title}
+            description={project.description}
+            tech={project.tech}
+            image={project.image}
+            lang={lang}
+          />
+        ))}
+      </Carousel>
+    </ScrollAnimation>
+  </div>
+</section>

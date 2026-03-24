@@ -1,0 +1,108 @@
+---
+import type { Lang } from '../../i18n/config';
+import { t, getLocalizedPath } from '../../i18n/config';
+import ScrollAnimation from '../ScrollAnimation.astro';
+import Carousel from '../Carousel.tsx';
+import BlogCard from '../BlogCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+// Dummy blog entries (placeholder until real content collection)
+const dummyPosts = [
+  {
+    slug: 'cve-2025-29927',
+    title: lang === 'en'
+      ? 'CVE-2025-29927: The Next.js Middleware Vulnerability You Need to Know'
+      : lang === 'es'
+      ? 'CVE-2025-29927: La Vulnerabilidad de Middleware de Next.js que Debes Conocer'
+      : 'CVE-2025-29927: A Vulnerabilidade de Middleware do Next.js que Você Precisa Conhecer',
+    description: lang === 'en'
+      ? 'A critical vulnerability in Next.js middleware allows authentication bypass. Understand the impact and how to protect your applications.'
+      : lang === 'es'
+      ? 'Una vulnerabilidad crítica en el middleware de Next.js permite eludir la autenticación. Comprende el impacto y cómo proteger tus aplicaciones.'
+      : 'Uma vulnerabilidade crítica no middleware do Next.js permite bypass de autenticação. Entenda o impacto e como proteger suas aplicações.',
+    category: 'backend',
+    tags: ['security', 'nextjs', 'cve'],
+    readingTime: 8,
+    publishedDate: new Date('2025-03-23'),
+  },
+  {
+    slug: 'openrouter-api',
+    title: lang === 'en'
+      ? 'OpenRouter: How to Use Multiple AI Models with a Single API'
+      : lang === 'es'
+      ? 'OpenRouter: Cómo Usar Múltiples Modelos de IA con una Sola API'
+      : 'OpenRouter: Como Usar Múltiplos Modelos de IA com uma Única API',
+    description: lang === 'en'
+      ? 'OpenRouter lets you access dozens of AI models through a unified API. Discover how to integrate it into your projects and reduce costs.'
+      : lang === 'es'
+      ? 'OpenRouter te permite acceder a docenas de modelos de IA a través de una API unificada. Descubre cómo integrarlo en tus proyectos y reducir costos.'
+      : 'OpenRouter permite acessar dezenas de modelos de IA por uma API unificada. Descubra como integrá-la nos seus projetos e reduzir custos.',
+    category: 'ia',
+    tags: ['ai', 'api', 'openrouter'],
+    readingTime: 6,
+    publishedDate: new Date('2025-03-10'),
+  },
+  {
+    slug: 'microservices-patterns',
+    title: lang === 'en'
+      ? 'Microservices Patterns That Actually Work in Production'
+      : lang === 'es'
+      ? 'Patrones de Microservicios que Realmente Funcionan en Producción'
+      : 'Padrões de Microsserviços que Realmente Funcionam em Produção',
+    description: lang === 'en'
+      ? 'After migrating a monolith to microservices with zero downtime, here are the patterns that made the difference in a real production environment.'
+      : lang === 'es'
+      ? 'Después de migrar un monolito a microservicios con cero tiempo de inactividad, estos son los patrones que marcaron la diferencia en producción real.'
+      : 'Depois de migrar um monolito para microsserviços com zero downtime, estes são os padrões que fizeram a diferença em produção real.',
+    category: 'architecture',
+    tags: ['microservices', 'nodejs', 'architecture'],
+    readingTime: 12,
+    publishedDate: new Date('2025-02-20'),
+  },
+];
+---
+
+<section class="py-24 max-w-6xl mx-auto px-6" aria-labelledby="blog-heading">
+  <ScrollAnimation animation="fade-in">
+    <div class="flex items-center justify-between mb-12">
+      <div class="flex items-center gap-4">
+        <span class="text-accent font-mono text-sm">03.</span>
+        <h2 id="blog-heading" class="text-3xl md:text-4xl font-bold text-text-primary">
+          {t(lang, 'sections.blog')}
+        </h2>
+        <div class="hidden sm:block flex-1 h-px bg-border max-w-xs" aria-hidden="true"></div>
+      </div>
+      <a
+        href={getLocalizedPath('/blog', lang)}
+        class="text-sm text-accent hover:text-accent/80 transition-colors flex items-center gap-1 shrink-0"
+      >
+        {t(lang, 'sections.view_all_posts')}
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
+  </ScrollAnimation>
+
+  <ScrollAnimation animation="fade-in" delay={150}>
+    <Carousel client:visible label={t(lang, 'sections.blog')}>
+      {dummyPosts.map((post) => (
+        <BlogCard
+          slug={post.slug}
+          title={post.title}
+          description={post.description}
+          category={post.category}
+          tags={post.tags}
+          readingTime={post.readingTime}
+          publishedDate={post.publishedDate}
+          lang={lang}
+        />
+      ))}
+    </Carousel>
+  </ScrollAnimation>
+</section>

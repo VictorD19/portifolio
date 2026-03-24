@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect, useCallback, type ReactNode, type KeyboardEvent } from 'react';
+import { Children, useRef, useState, useEffect, useCallback, type ReactNode, type KeyboardEvent } from 'react';
 
 interface CarouselProps {
-  children: ReactNode[];
+  children: ReactNode | ReactNode[];
   gap?: number;
   className?: string;
   label?: string;
@@ -13,6 +13,7 @@ export default function Carousel({
   className = '',
   label = 'Carousel',
 }: CarouselProps) {
+  const childArray = Children.toArray(children);
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -146,7 +147,7 @@ export default function Carousel({
         // webkit scrollbar hidden via className + global CSS
         className="carousel-track"
       >
-        {children.map((child, i) => (
+        {childArray.map((child, i) => (
           <div
             key={i}
             role="listitem"

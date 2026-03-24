@@ -34,6 +34,27 @@ const posts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTim
       </h1>
     </ScrollAnimation>
 
+    <div id="search" class="mb-8"></div>
+    <script>
+      if (document.getElementById('search')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/pagefind/pagefind-ui.css';
+        document.head.appendChild(link);
+
+        const script = document.createElement('script');
+        script.src = '/pagefind/pagefind-ui.js';
+        script.onload = () => {
+          new (window as any).PagefindUI({
+            element: '#search',
+            showSubResults: false,
+            showImages: false,
+          });
+        };
+        document.head.appendChild(script);
+      }
+    </script>
+
     {posts.length === 0 ? (
       <ScrollAnimation animation="fade-in">
         <p class="text-text-secondary text-center py-20">{t(lang, 'blog_page.empty')}</p>

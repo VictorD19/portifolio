@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ScrollAnimation from '../../components/ScrollAnimation.astro';
+import { t } from '../../i18n/config';
+import { getServicesByLang } from '../../data/services';
+
+const lang = 'es' as const;
+const services = getServicesByLang(lang);
+
+const title = `${t(lang, 'services_page.title')} | Victor Bertram`;
+const description = t(lang, 'footer.services');
+
+const iconBg: Record<string, string> = {
+  'web-development': 'from-blue-900/60 to-blue-800/40',
+  'mobile-development': 'from-green-900/60 to-green-800/40',
+  'api-backend': 'from-purple-900/60 to-purple-800/40',
+  'consulting': 'from-yellow-900/60 to-yellow-800/40',
+  'automations': 'from-pink-900/60 to-pink-800/40',
+};
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <!-- Header -->
+    <ScrollAnimation animation="slide-up">
+      <div class="mb-14">
+        <p class="text-accent font-mono text-sm mb-2">~/servicios</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-text-primary mb-4">
+          {t(lang, 'services_page.title')}
+        </h1>
+        <p class="text-text-secondary text-lg max-w-2xl">
+          {t(lang, 'about.bio')}
+        </p>
+      </div>
+    </ScrollAnimation>
+
+    <!-- Services grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map((service, index) => (
+        <ScrollAnimation animation="slide-up" delay={index * 80}>
+          <div class="group flex flex-col h-full bg-navy-light border border-border rounded-2xl overflow-hidden hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300">
+            <!-- Colored icon area -->
+            <div class={`flex items-center gap-4 p-6 bg-gradient-to-br ${iconBg[service.slug] ?? 'from-navy-dark/60 to-navy-light/40'}`}>
+              <span class="text-4xl" role="img" aria-label={service.title}>{service.icon}</span>
+              <h2 class="text-xl font-bold text-text-primary group-hover:text-accent transition-colors duration-200">
+                {service.title}
+              </h2>
+            </div>
+
+            <!-- Card body -->
+            <div class="flex flex-col flex-1 p-6 gap-4">
+              <p class="text-text-secondary text-sm leading-relaxed">
+                {service.description}
+              </p>
+
+              <!-- Feature list -->
+              <ul class="flex flex-col gap-2 flex-1">
+                {service.features.map((feature) => (
+                  <li class="flex items-start gap-2 text-sm text-text-secondary">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <!-- CTA -->
+              <a
+                href="/es/contact"
+                class="mt-4 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-navy bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-navy-light"
+              >
+                {t(lang, 'services_page.cta')}
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </ScrollAnimation>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

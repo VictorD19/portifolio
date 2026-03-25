@@ -9,26 +9,61 @@ interface Props {
 
 const { lang } = Astro.props;
 
-const techStack = [
-  'TypeScript', 'Node.js', 'React', 'Next.js', 'Astro',
-  'NestJS', 'PostgreSQL', 'Redis', 'Docker', 'Kubernetes',
-  'React Native', 'MongoDB', 'RabbitMQ', 'AWS', 'OpenAI',
-];
+const subtitle = {
+  pt: 'De delivery em bicicleta sem freio a desenvolvedor de software.',
+  en: 'From delivering on a bike with no brakes to software developer.',
+  es: 'De delivery en bici sin frenos a desarrollador de software.',
+};
 
-const metrics = [
-  { value: '5+', labelPt: 'Anos de experiência', labelEn: 'Years of experience', labelEs: 'Años de experiencia' },
-  { value: '60%', labelPt: 'Redução de latência', labelEn: 'Latency reduction', labelEs: 'Reducción de latencia' },
-  { value: '70%', labelPt: 'Otimização de queries', labelEn: 'Query optimization', labelEs: 'Optimización de queries' },
-  { value: '40%', labelPt: 'Menos incidentes', labelEn: 'Fewer incidents', labelEs: 'Menos incidentes' },
-];
+const bioParagraphs = {
+  pt: [
+    'Saí da Venezuela sem dinheiro, sem idioma e sem um plano definido. Comecei do zero — literalmente. Dormi no chão, trabalhei como borracheiro e fiz delivery em uma bicicleta sem freio, buscando qualquer oportunidade para seguir em frente.',
+    'Acordava às 3 da manhã para trabalhar em um frigorífico e só voltava para casa no meio da tarde. À noite, enquanto muitos descansavam, eu ia estudar. E quando todos iam embora, eu ficava — praticando, errando, aprendendo e tentando de novo.',
+    'Com o tempo, ainda fora da tecnologia, liderei mais de 150 pessoas de diferentes nacionalidades. Foi ali que desenvolvi responsabilidade, resiliência e a capacidade de resolver problemas sob pressão. Mas mesmo assim, eu sabia que queria mais.',
+    'Decidi entrar em tecnologia e recomeçar do zero mais uma vez. Entrei em um curso de desenvolvimento Full Stack e fui até o fim — mesmo quando o cansaço batia forte. De dezenas de pessoas que começaram, apenas poucos terminaram. Eu estava entre eles.',
+    'Enquanto estudava, comecei a pegar projetos freelance para ganhar experiência prática. Não esperava estar pronto — eu fazia acontecer. Dia após dia, construindo não só código, mas uma nova realidade para mim.',
+    'Hoje trabalho com desenvolvimento de software, criando aplicações com foco em performance, estabilidade e manutenibilidade. Mais do que escrever código, eu resolvo problemas reais e entrego soluções que funcionam de verdade.',
+    'Não cheguei até aqui por sorte ou talento fora da curva. Cheguei porque, todas as vezes que ficou difícil, eu escolhi continuar.',
+  ],
+  en: [
+    'I left Venezuela with no money, no language, and no plan. I started from zero — literally. I slept on the floor, worked as a tire repairman, and did deliveries on a bike with no brakes, chasing any opportunity to keep moving forward.',
+    'I woke up at 3am to work at a meatpacking plant and only got home mid-afternoon. At night, while most people rested, I went to class. And when everyone left, I stayed — practicing, failing, learning, and trying again.',
+    'Over time, still outside of tech, I led over 150 people from different nationalities. That\'s where I developed responsibility, resilience, and the ability to solve problems under pressure. But even then, I knew I wanted more.',
+    'I decided to break into tech and start from zero all over again. I enrolled in a Full Stack development course and went all the way — even when exhaustion hit hard. Out of dozens who started, only a few finished. I was one of them.',
+    'While studying, I started taking freelance projects to gain hands-on experience. I didn\'t wait to be ready — I made it happen. Day after day, building not just code, but a new reality for myself.',
+    'Today I work in software development, building applications focused on performance, stability, and maintainability. More than writing code, I solve real problems and deliver solutions that actually work.',
+    'I didn\'t get here by luck or extraordinary talent. I got here because every single time it got hard, I chose to keep going.',
+  ],
+  es: [
+    'Salí de Venezuela sin plata, sin idioma y sin un plan definido. Empecé de cero — literalmente. Dormí en el piso, trabajé como gomero e hice delivery en una bici sin frenos, buscando cualquier oportunidad para seguir adelante.',
+    'Me levantaba a las 3 de la mañana para trabajar en un frigorífico y recién volvía a casa a media tarde. A la noche, mientras muchos descansaban, yo iba a estudiar. Y cuando todos se iban, yo me quedaba — practicando, equivocándome, aprendiendo e intentando de nuevo.',
+    'Con el tiempo, todavía fuera de la tecnología, lideré a más de 150 personas de distintas nacionalidades. Fue ahí donde desarrollé responsabilidad, resiliencia y la capacidad de resolver problemas bajo presión. Pero aun así, sabía que quería más.',
+    'Decidí entrar en tecnología y empezar de cero una vez más. Me metí en un curso de desarrollo Full Stack y llegué hasta el final — incluso cuando el cansancio pegaba fuerte. De decenas de personas que empezaron, solo unos pocos terminaron. Yo estaba entre ellos.',
+    'Mientras estudiaba, empecé a tomar proyectos freelance para ganar experiencia práctica. No esperé a estar listo — lo hice pasar. Día tras día, construyendo no solo código, sino una nueva realidad para mí.',
+    'Hoy trabajo en desarrollo de software, creando aplicaciones con foco en performance, estabilidad y mantenibilidad. Más que escribir código, resuelvo problemas reales y entrego soluciones que funcionan de verdad.',
+    'No llegué hasta acá por suerte ni por talento fuera de lo común. Llegué porque, todas las veces que se puso difícil, elegí seguir.',
+  ],
+};
 
-const metricLabel = (m: typeof metrics[0]) =>
-  lang === 'en' ? m.labelEn : lang === 'es' ? m.labelEs : m.labelPt;
+const values = [
+  {
+    title: { pt: 'Resiliência', en: 'Resilience', es: 'Resiliencia' },
+    desc: { pt: 'Já dormi no chão, trabalhei em frigorífico às 3 da manhã e fiz delivery numa bicicleta sem freio. Cada vez que a situação apertou, eu não recuei — encontrei outro caminho. Essa mentalidade é a mesma que levo pro código: quando algo quebra em produção ou o prazo aperta, eu não travo. Respiro, analiso e resolvo.', en: 'I\'ve slept on the floor, worked at a meatpacking plant at 3am, and delivered on a bike with no brakes. Every time things got tight, I didn\'t step back — I found another way. That\'s the same mindset I bring to code: when something breaks in production or a deadline gets tight, I don\'t freeze. I breathe, analyze, and solve it.', es: 'Ya dormí en el piso, trabajé en un frigorífico a las 3 de la mañana e hice delivery en una bici sin frenos. Cada vez que la situación se puso difícil, no retrocedí — encontré otro camino. Esa mentalidad es la misma que llevo al código: cuando algo se rompe en producción o el plazo aprieta, no me trabo. Respiro, analizo y resuelvo.' },
+  },
+  {
+    title: { pt: 'Autonomia', en: 'Autonomy', es: 'Autonomía' },
+    desc: { pt: 'Ninguém me disse quando eu estava pronto — eu decidi começar. Enquanto ainda estudava, já estava pegando projetos freelance pra praticar. Não esperava permissão, não esperava o momento perfeito. Hoje é igual: recebo uma demanda, entendo o contexto e faço acontecer, do levantamento até a entrega.', en: 'Nobody told me when I was ready — I decided to start. While still studying, I was already taking freelance projects to practice. I didn\'t wait for permission, I didn\'t wait for the perfect moment. Today it\'s the same: I get a demand, understand the context, and make it happen, from discovery to delivery.', es: 'Nadie me dijo cuándo estaba listo — yo decidí empezar. Mientras todavía estudiaba, ya estaba tomando proyectos freelance para practicar. No esperé permiso, no esperé el momento perfecto. Hoy es igual: recibo una demanda, entiendo el contexto y lo hago pasar, del relevamiento a la entrega.' },
+  },
+  {
+    title: { pt: 'Resolver de verdade', en: 'Solve for real', es: 'Resolver de verdad' },
+    desc: { pt: 'Já otimizei queries que demoravam minutos pra rodar em segundos, migrei sistemas legados pra APIs modernas e criei automações que cortaram o tempo de atendimento quase pela metade. Pra mim, o trabalho não acaba quando o código compila — acaba quando o usuário final sente a diferença.', en: 'I\'ve optimized queries that took minutes down to seconds, migrated legacy systems to modern APIs, and built automations that cut service time nearly in half. For me, the job isn\'t done when the code compiles — it\'s done when the end user feels the difference.', es: 'Ya optimicé queries que tardaban minutos para correr en segundos, migré sistemas legados a APIs modernas y creé automatizaciones que recortaron el tiempo de atención casi a la mitad. Para mí, el trabajo no termina cuando el código compila — termina cuando el usuario final siente la diferencia.' },
+  },
+];
 ---
 
-<section class="py-24 max-w-6xl mx-auto px-6" aria-labelledby="about-heading">
+<section class="pt-12 pb-24 max-w-6xl mx-auto px-6" aria-labelledby="about-heading">
   <ScrollAnimation animation="fade-in">
-    <div class="flex items-center gap-4 mb-12">
+    <div class="flex items-center gap-4 mb-10">
       <span class="text-accent font-mono text-sm">01.</span>
       <h2 id="about-heading" class="text-3xl md:text-4xl font-bold text-text-primary">
         {t(lang, 'about.title')}
@@ -37,48 +72,28 @@ const metricLabel = (m: typeof metrics[0]) =>
     </div>
   </ScrollAnimation>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-    <!-- Bio + metrics -->
-    <ScrollAnimation animation="fade-in" delay={100}>
-      <div class="flex flex-col gap-6">
-        <p class="text-text-secondary text-lg leading-relaxed">
-          {t(lang, 'about.bio')}
+  <div class="max-w-3xl">
+    <ScrollAnimation animation="slide-up" delay={100}>
+      <div class="flex flex-col gap-10">
+        <!-- Bio -->
+        <p class="text-accent font-semibold text-lg italic mb-2">
+          {subtitle[lang]}
         </p>
-
-        <!-- Metrics -->
-        <div class="grid grid-cols-2 gap-4 mt-4">
-          {metrics.map((m) => (
-            <div class="p-4 bg-navy-light rounded-lg border border-border">
-              <div class="text-2xl font-extrabold text-accent mb-1">{m.value}</div>
-              <div class="text-xs text-text-secondary">{metricLabel(m)}</div>
-            </div>
+        <div class="flex flex-col gap-4">
+          {bioParagraphs[lang].map((paragraph) => (
+            <p class="text-text-secondary text-base leading-relaxed">
+              {paragraph}
+            </p>
           ))}
         </div>
-      </div>
-    </ScrollAnimation>
 
-    <!-- Photo placeholder + tech stack -->
-    <ScrollAnimation animation="slide-up" delay={200}>
-      <div class="flex flex-col gap-6">
-        <!-- Photo placeholder -->
-        <div
-          class="w-full aspect-square max-w-xs mx-auto lg:mx-0 rounded-xl bg-navy-light border border-border flex items-center justify-center overflow-hidden"
-          aria-label="Victor Bertram photo"
-        >
-          <div class="text-center text-text-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 mx-auto mb-3 opacity-30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-            </svg>
-            <span class="text-xs font-mono opacity-40">Victor Bertram</span>
-          </div>
-        </div>
-
-        <!-- Tech stack tags -->
-        <div class="flex flex-wrap gap-2">
-          {techStack.map((tech) => (
-            <span class="px-3 py-1 text-xs font-mono text-accent bg-accent/10 border border-accent/20 rounded-full">
-              {tech}
-            </span>
+        <!-- Values -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {values.map((v) => (
+            <div class="p-4 bg-navy-dark rounded-xl border border-border">
+              <h3 class="text-sm font-semibold text-text-primary mb-2">{v.title[lang]}</h3>
+              <p class="text-xs text-text-secondary leading-relaxed">{v.desc[lang]}</p>
+            </div>
           ))}
         </div>
       </div>

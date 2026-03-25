@@ -30,18 +30,20 @@ const readMoreLabel = lang === 'en' ? 'Read more' : lang === 'es' ? 'Leer más' 
 
 // Category color palette
 const categoryColors: Record<string, string> = {
-  backend: 'from-blue-900/80 to-blue-800/60',
-  frontend: 'from-purple-900/80 to-purple-800/60',
-  mobile: 'from-green-900/80 to-green-800/60',
-  devops: 'from-orange-900/80 to-orange-800/60',
-  ia: 'from-pink-900/80 to-pink-800/60',
-  ai: 'from-pink-900/80 to-pink-800/60',
-  architecture: 'from-indigo-900/80 to-indigo-800/60',
-  carreira: 'from-teal-900/80 to-teal-800/60',
-  career: 'from-teal-900/80 to-teal-800/60',
+  backend: 'from-blue-100 to-blue-50',
+  frontend: 'from-sky-100 to-sky-50',
+  mobile: 'from-teal-100 to-teal-50',
+  devops: 'from-slate-200 to-slate-100',
+  ia: 'from-indigo-100 to-indigo-50',
+  ai: 'from-indigo-100 to-indigo-50',
+  architecture: 'from-slate-200 to-slate-100',
+  carreira: 'from-emerald-100 to-emerald-50',
+  career: 'from-emerald-100 to-emerald-50',
+  security: 'from-red-100 to-red-50',
+  seguranca: 'from-red-100 to-red-50',
 };
 
-const categoryGradient = categoryColors[category.toLowerCase()] ?? 'from-navy-light/80 to-navy-dark/60';
+const categoryGradient = categoryColors[category.toLowerCase()] ?? 'from-slate-100 to-slate-50';
 
 const formattedDate = publishedDate
   ? new Intl.DateTimeFormat(lang, { year: 'numeric', month: 'short', day: 'numeric' }).format(publishedDate)
@@ -50,18 +52,18 @@ const formattedDate = publishedDate
 
 <a
   href={href}
-  class={`blog-card group block w-72 md:w-80 flex-shrink-0 bg-navy-light border border-border rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-navy ${className}`}
+  class={`blog-card group block bg-navy-light border border-border rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-white ${className}`}
   aria-label={title}
 >
   <!-- Colored header by category -->
   <div class={`relative h-32 bg-gradient-to-br ${categoryGradient} overflow-hidden flex flex-col justify-end p-4`}>
     <!-- Category badge -->
-    <span class="absolute top-3 left-4 inline-block px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-text-primary bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+    <span class="absolute top-3 left-4 inline-block px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-slate-700 bg-white/80 backdrop-blur-sm rounded-full border border-white/60">
       {category}
     </span>
 
     <!-- Reading time + date in header -->
-    <div class="flex items-center gap-3 text-xs text-text-secondary/80">
+    <div class="flex items-center gap-3 text-xs text-slate-600">
       <span class="flex items-center gap-1">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />

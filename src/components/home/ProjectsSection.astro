@@ -2,7 +2,6 @@
 import type { Lang } from '../../i18n/config';
 import { t, getLocalizedPath } from '../../i18n/config';
 import ScrollAnimation from '../ScrollAnimation.astro';
-import Carousel from '../Carousel.tsx';
 import ProjectCard from '../ProjectCard.astro';
 import { getFeaturedProjects } from '../../data/projects';
 
@@ -15,7 +14,7 @@ const { lang } = Astro.props;
 const featuredProjects = getFeaturedProjects(lang);
 ---
 
-<section class="py-24 bg-navy-dark/40" aria-labelledby="projects-heading">
+<section class="py-24 bg-navy-dark/60" aria-labelledby="projects-heading">
   <div class="max-w-6xl mx-auto px-6">
     <ScrollAnimation animation="slide-up">
       <div class="flex items-center justify-between mb-12">
@@ -39,18 +38,21 @@ const featuredProjects = getFeaturedProjects(lang);
     </ScrollAnimation>
 
     <ScrollAnimation animation="slide-up" delay={150}>
-      <Carousel client:visible label={t(lang, 'sections.projects')}>
+      <div class="flex flex-wrap gap-4">
         {featuredProjects.map((project) => (
-          <ProjectCard
-            slug={project.slug}
-            title={project.title}
-            description={project.description}
-            tech={project.tech}
-            image={project.image}
-            lang={lang}
-          />
+          <div class="w-full sm:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)]">
+            <ProjectCard
+              slug={project.slug}
+              title={project.title}
+              description={project.description}
+              tech={project.tech}
+              image={project.image}
+              badge={project.badge}
+              lang={lang}
+            />
+          </div>
         ))}
-      </Carousel>
+      </div>
     </ScrollAnimation>
   </div>
 </section>

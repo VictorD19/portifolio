@@ -12,11 +12,11 @@ const description = t(lang, 'footer.services');
 
 // Icon color map for service slugs
 const iconBg: Record<string, string> = {
-  'web-development': 'from-blue-900/60 to-blue-800/40',
-  'mobile-development': 'from-green-900/60 to-green-800/40',
-  'api-backend': 'from-purple-900/60 to-purple-800/40',
-  'consulting': 'from-yellow-900/60 to-yellow-800/40',
-  'automations': 'from-pink-900/60 to-pink-800/40',
+  'web-development': 'from-blue-100 to-blue-50',
+  'mobile-development': 'from-green-100 to-green-50',
+  'api-backend': 'from-purple-100 to-purple-50',
+  'consulting': 'from-yellow-100 to-yellow-50',
+  'automations': 'from-pink-100 to-pink-50',
 };
 ---
 
@@ -42,7 +42,13 @@ const iconBg: Record<string, string> = {
           <div class="group flex flex-col h-full bg-navy-light border border-border rounded-2xl overflow-hidden hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300">
             <!-- Colored icon area -->
             <div class={`flex items-center gap-4 p-6 bg-gradient-to-br ${iconBg[service.slug] ?? 'from-navy-dark/60 to-navy-light/40'}`}>
-              <span class="text-4xl" role="img" aria-label={service.title}>{service.icon}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-accent flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                {service.icon === 'globe' && <><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></>}
+                {service.icon === 'smartphone' && <><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></>}
+                {service.icon === 'settings' && <><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></>}
+                {service.icon === 'lightbulb' && <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" /></>}
+                {service.icon === 'bot' && <><path d="M12 8V4H8" /><rect width="16" height="12" x="4" y="8" rx="2" /><path d="M2 14h2" /><path d="M20 14h2" /><path d="M15 13v2" /><path d="M9 13v2" /></>}
+              </svg>
               <h2 class="text-xl font-bold text-text-primary group-hover:text-accent transition-colors duration-200">
                 {service.title}
               </h2>
@@ -75,7 +81,7 @@ const iconBg: Record<string, string> = {
               <!-- CTA -->
               <a
                 href="/contact"
-                class="mt-4 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-navy bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-navy-light"
+                class="mt-4 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-white"
               >
                 {t(lang, 'services_page.cta')}
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

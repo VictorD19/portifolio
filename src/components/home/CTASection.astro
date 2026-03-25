@@ -10,7 +10,7 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<section class="py-24 bg-navy-dark/40" aria-labelledby="cta-heading">
+<section class="py-24 bg-navy-dark/60" aria-labelledby="cta-heading">
   <div class="max-w-6xl mx-auto px-6">
     <ScrollAnimation animation="scale-in">
       <div class="text-center max-w-2xl mx-auto">
@@ -23,7 +23,7 @@ const { lang } = Astro.props;
         </p>
         <a
           href={getLocalizedPath('/contact', lang)}
-          class="inline-flex items-center gap-2 px-8 py-4 bg-accent text-navy font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 text-lg"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 text-lg"
         >
           {t(lang, 'sections.cta_button')}
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

@@ -67,13 +67,13 @@ posts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
         <p class="text-text-secondary text-center py-20">{t(lang, 'blog_page.empty')}</p>
       </ScrollAnimation>
     ) : (
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="flex flex-wrap gap-2">
         {posts.map((post, index) => {
           const postLang = post.data.lang;
           const slug = idToSlug(post.id);
           const readingTime = getReadingTime(post.body ?? '');
           return (
-            <ScrollAnimation animation="slide-up" delay={index * 100}>
+            <ScrollAnimation animation="slide-up" delay={index * 100} class="w-full sm:w-[calc(50%-4px)] lg:w-[calc(33.333%-6px)]">
               <BlogCard
                 slug={slug}
                 title={post.data.title}
@@ -83,7 +83,6 @@ posts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
                 readingTime={readingTime}
                 publishedDate={post.data.date}
                 lang={postLang === 'en' ? 'en' : 'pt'}
-                class="w-full"
               />
             </ScrollAnimation>
           );

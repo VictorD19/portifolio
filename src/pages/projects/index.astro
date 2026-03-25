@@ -1,21 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectFilter from '../../components/ProjectFilter.tsx';
+import ProjectCard from '../../components/ProjectCard.astro';
 import ScrollAnimation from '../../components/ScrollAnimation.astro';
 import { t } from '../../i18n/config';
 import { getProjectsByLang } from '../../data/projects';
 
 const lang = 'pt' as const;
 const projects = getProjectsByLang(lang);
-
-const projectData = projects.map((p) => ({
-  slug: p.slug,
-  title: p.title,
-  description: p.description,
-  tech: p.tech,
-  image: p.image,
-  lang,
-}));
 
 const title = `${t(lang, 'projects_page.title')} | Victor Bertram`;
 const description = t(lang, 'hero.bio');
@@ -32,13 +23,20 @@ const description = t(lang, 'hero.bio');
       </div>
     </ScrollAnimation>
 
-    <ProjectFilter
-      client:load
-      projects={projectData}
-      filterAllLabel={t(lang, 'projects_page.filter_all')}
-      emptyLabel={t(lang, 'projects_page.empty')}
-      clearFilterLabel={t(lang, 'projects_page.clear_filter')}
-      lang={lang}
-    />
+    <div class="flex flex-wrap gap-4">
+      {projects.map((project) => (
+        <div class="w-full sm:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)]">
+          <ProjectCard
+            slug={project.slug}
+            title={project.title}
+            description={project.description}
+            tech={project.tech}
+            image={project.image}
+            badge={project.badge}
+            lang={lang}
+          />
+        </div>
+      ))}
+    </div>
   </section>
 </BaseLayout>

@@ -31,14 +31,12 @@ export default function MobileNav({ links, ctaHref, ctaLabel, lang }: MobileNavP
     });
   }, []);
 
-  // Close on ESC
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && open) {
         close();
         buttonRef.current?.focus();
       }
-      // Focus trap
       if (e.key === 'Tab' && open && menuRef.current) {
         const focusable = menuRef.current.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled])'
@@ -58,26 +56,17 @@ export default function MobileNav({ links, ctaHref, ctaLabel, lang }: MobileNavP
     return () => document.removeEventListener('keydown', handleKey);
   }, [open, close]);
 
-  // Focus first link when opened
   useEffect(() => {
     if (open) {
       setTimeout(() => firstFocusRef.current?.focus(), 50);
     }
   }, [open]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       document.body.style.overflow = '';
     };
   }, []);
-
-  const accentColor = 'var(--color-accent)';
-  const navyDark = 'var(--color-navy-dark)';
-  const navyLight = 'var(--color-navy-light)';
-  const textPrimary = 'var(--color-text-primary)';
-  const textSecondary = 'var(--color-text-secondary)';
-  const border = 'var(--color-border)';
 
   return (
     <>
@@ -88,47 +77,16 @@ export default function MobileNav({ links, ctaHref, ctaLabel, lang }: MobileNavP
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
         aria-controls="mobile-nav-overlay"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          gap: '5px',
-          padding: '8px',
-          background: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          color: textPrimary,
-        }}
+        className="flex flex-col justify-center gap-[5px] p-2 bg-transparent border-none cursor-pointer text-text-primary"
       >
         <span
-          style={{
-            display: 'block',
-            width: '24px',
-            height: '2px',
-            backgroundColor: open ? accentColor : textPrimary,
-            transition: 'transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease',
-            transform: open ? 'translateY(7px) rotate(45deg)' : 'none',
-          }}
+          className={`block w-6 h-0.5 transition-all duration-300 ease-in-out ${open ? 'bg-accent translate-y-[7px] rotate-45' : 'bg-text-primary'}`}
         />
         <span
-          style={{
-            display: 'block',
-            width: '24px',
-            height: '2px',
-            backgroundColor: open ? accentColor : textPrimary,
-            transition: 'opacity 0.3s ease',
-            opacity: open ? 0 : 1,
-          }}
+          className={`block w-6 h-0.5 transition-opacity duration-300 ease-in-out ${open ? 'bg-accent opacity-0' : 'bg-text-primary opacity-100'}`}
         />
         <span
-          style={{
-            display: 'block',
-            width: '24px',
-            height: '2px',
-            backgroundColor: open ? accentColor : textPrimary,
-            transition: 'transform 0.3s ease, background-color 0.3s ease',
-            transform: open ? 'translateY(-7px) rotate(-45deg)' : 'none',
-          }}
+          className={`block w-6 h-0.5 transition-all duration-300 ease-in-out ${open ? 'bg-accent -translate-y-[7px] -rotate-45' : 'bg-text-primary'}`}
         />
       </button>
 
@@ -139,67 +97,31 @@ export default function MobileNav({ links, ctaHref, ctaLabel, lang }: MobileNavP
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 9999,
-          backgroundColor: navyDark,
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '24px',
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? 'auto' : 'none',
-          transition: 'opacity 0.3s ease',
-        }}
+        className={`fixed inset-0 z-[9999] bg-navy-light flex flex-col p-6 transition-opacity duration-300 ease-in-out ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
       >
-        {/* Close button at top-right */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '48px' }}>
+        {/* Close button */}
+        <div className="flex justify-end mb-12">
           <button
             onClick={close}
             aria-label="Close menu"
-            style={{
-              background: 'transparent',
-              border: `1px solid ${border}`,
-              color: textPrimary,
-              borderRadius: '8px',
-              padding: '8px 16px',
-              cursor: 'pointer',
-              fontSize: '14px',
-            }}
+            className="bg-transparent border border-border text-text-primary rounded-lg px-4 py-2 cursor-pointer text-sm hover:border-accent hover:text-accent transition-colors"
           >
             ✕
           </button>
         </div>
 
         {/* Nav links */}
-        <nav style={{ flex: 1 }}>
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <nav className="flex-1">
+          <ul className="list-none m-0 p-0 flex flex-col gap-2">
             {links.map((link, i) => (
               <li key={link.href}>
                 <a
                   ref={i === 0 ? firstFocusRef : undefined}
                   href={link.href}
                   onClick={close}
-                  style={{
-                    display: 'block',
-                    padding: '16px 0',
-                    fontSize: '24px',
-                    fontWeight: 700,
-                    color: textPrimary,
-                    textDecoration: 'none',
-                    borderBottom: `1px solid ${border}`,
-                    transition: 'color 0.2s ease, padding-left 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.color = accentColor;
-                    (e.currentTarget as HTMLAnchorElement).style.paddingLeft = '8px';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.color = textPrimary;
-                    (e.currentTarget as HTMLAnchorElement).style.paddingLeft = '0';
-                  }}
+                  className="block py-4 text-2xl font-bold text-text-primary no-underline border-b border-border transition-all duration-200 hover:text-accent hover:pl-2"
                 >
-                  <span style={{ color: accentColor, fontFamily: 'monospace', fontSize: '14px', marginRight: '12px' }}>
+                  <span className="text-accent font-mono text-sm mr-3">
                     0{i + 1}.
                   </span>
                   {link.label}
@@ -213,25 +135,7 @@ export default function MobileNav({ links, ctaHref, ctaLabel, lang }: MobileNavP
         <a
           href={ctaHref}
           onClick={close}
-          style={{
-            display: 'block',
-            marginTop: '32px',
-            padding: '16px',
-            textAlign: 'center',
-            border: `2px solid ${accentColor}`,
-            color: accentColor,
-            borderRadius: '8px',
-            fontWeight: 600,
-            fontSize: '16px',
-            textDecoration: 'none',
-            transition: 'background-color 0.2s ease',
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.backgroundColor = `color-mix(in srgb, var(--color-accent) 10%, transparent)`;
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'transparent';
-          }}
+          className="block mt-8 py-4 text-center border-2 border-accent text-accent rounded-lg font-semibold text-base no-underline transition-colors duration-200 hover:bg-accent/10"
         >
           {ctaLabel}
         </a>

@@ -8,12 +8,26 @@ interface Props {
 }
 
 const { currentLang, currentPath } = Astro.props;
+
+// Strip current language prefix to get the base path
+const langPrefixes = Object.keys(languages).filter((l) => l !== 'pt');
+let basePath = currentPath;
+for (const prefix of langPrefixes) {
+  if (basePath.startsWith(`/${prefix}/`)) {
+    basePath = basePath.slice(prefix.length + 1);
+    break;
+  }
+  if (basePath === `/${prefix}`) {
+    basePath = '/';
+    break;
+  }
+}
 ---
 
 <nav class="flex items-center gap-1" aria-label="Language switcher">
   {Object.entries(languages).map(([lang, label]) => {
     const l = lang as Lang;
-    const href = getLocalizedPath(currentPath, l);
+    const href = getLocalizedPath(basePath, l);
     const isActive = l === currentLang;
     return (
       <a

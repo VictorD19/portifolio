@@ -1,4 +1,5 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import SEOHead from '../components/SEOHead.astro';
 import Navbar from '../components/Navbar.astro';
@@ -42,12 +43,13 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <ViewTransitions />
   </head>
   <body class="min-h-screen bg-navy text-text-primary font-sans antialiased">
     <!-- Skip to main content for accessibility -->
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-navy focus:font-semibold focus:rounded focus:outline-none"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:font-semibold focus:rounded focus:outline-none"
     >
       Skip to main content
     </a>

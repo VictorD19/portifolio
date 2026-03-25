@@ -2,6 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import type { Lang } from '../i18n/config';
 import { t, getLocalizedPath } from '../i18n/config';
+import type { ProjectHighlight } from '../data/projects';
+import { getAdjacentProjects } from '../data/projects';
 
 interface Props {
   title: string;
@@ -11,12 +13,18 @@ interface Props {
   result: string;
   tech: string[];
   image?: string;
+  imageMobile?: string;
   lang: Lang;
   links?: {
     github?: string;
     live?: string;
   };
   slug: string;
+  role: string;
+  year: number;
+  duration: string;
+  category: string;
+  highlights: ProjectHighlight[];
 }
 
 const {
@@ -27,20 +35,28 @@ const {
   result,
   tech,
   image,
+  imageMobile,
   lang,
   links,
   slug,
+  role,
+  year,
+  duration,
+  category,
+  highlights,
 } = Astro.props;
+
+const { prev, next } = getAdjacentProjects(slug, lang);
 ---
 
 <BaseLayout title={`${title} | Victor Bertram`} description={description} lang={lang}>
   <!-- Banner -->
-  <section class="relative h-64 md:h-80 bg-navy-dark overflow-hidden">
+  <section class="relative h-72 md:h-96 bg-navy-dark overflow-hidden">
     {image ? (
       <img
         src={image}
         alt={title}
-        class="w-full h-full object-cover opacity-50"
+        class="w-full h-full object-cover opacity-60"
         loading="eager"
       />
     ) : (
@@ -48,101 +64,238 @@ const {
         {'</>'}
       </div>
     )}
-    <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
 
     <!-- Banner content -->
-    <div class="absolute bottom-0 left-0 right-0 max-w-4xl mx-auto px-6 pb-8">
-      <div class="flex flex-wrap gap-2 mb-3">
-        {tech.slice(0, 5).map((tag) => (
-          <span class="px-2 py-0.5 text-xs font-mono text-accent bg-accent/10 border border-accent/20 rounded">
-            {tag}
-          </span>
-        ))}
+    <div class="absolute bottom-0 left-0 right-0 max-w-6xl mx-auto px-6 pb-10">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="px-3 py-1 text-xs font-semibold text-accent bg-accent/10 border border-accent/20 rounded-full">
+          {category}
+        </span>
+        <span class="text-text-secondary text-sm">{year}</span>
       </div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-text-primary mb-2">{title}</h1>
-      <p class="text-text-secondary text-lg">{description}</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-text-primary mb-3">{title}</h1>
+      <p class="text-text-secondary text-lg max-w-2xl">{description}</p>
+
+      <!-- Links -->
+      {(links?.github || links?.live) && (
+        <div class="flex gap-3 mt-5">
+          {links.github && (
+            <a
+              href={links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-primary border border-border rounded-lg hover:border-accent/40 hover:text-accent transition-colors duration-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+              </svg>
+              GitHub
+            </a>
+          )}
+          {links.live && (
+            <a
+              href={links.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-navy-dark bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              Live Demo
+            </a>
+          )}
+        </div>
+      )}
     </div>
   </section>
 
-  <!-- Content -->
-  <div class="max-w-4xl mx-auto px-6 py-16">
-    <!-- Links -->
-    {(links?.github || links?.live) && (
-      <div class="flex gap-4 mb-12">
-        {links.github && (
-          <a
-            href={links.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-text-primary border border-border rounded-lg hover:border-accent/40 hover:text-accent transition-colors duration-200"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-            </svg>
-            GitHub
-          </a>
-        )}
-        {links.live && (
-          <a
-            href={links.live}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-navy bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-            </svg>
-            Live Demo
-          </a>
-        )}
-      </div>
-    )}
-
-    <!-- Case study sections -->
-    <div class="flex flex-col gap-12">
-      <!-- Problem -->
-      <div class="relative pl-6 border-l-2 border-accent/30">
-        <h2 class="text-xl font-bold text-accent mb-3">{t(lang, 'projects_page.problem')}</h2>
-        <p class="text-text-secondary leading-relaxed">{problem}</p>
-      </div>
-
-      <!-- Solution -->
-      <div class="relative pl-6 border-l-2 border-border">
-        <h2 class="text-xl font-bold text-text-primary mb-3">{t(lang, 'projects_page.solution')}</h2>
-        <p class="text-text-secondary leading-relaxed">{solution}</p>
-      </div>
-
-      <!-- Result -->
-      <div class="relative pl-6 border-l-2 border-accent/60">
-        <h2 class="text-xl font-bold text-accent mb-3">{t(lang, 'projects_page.result')}</h2>
-        <p class="text-text-secondary leading-relaxed">{result}</p>
-      </div>
-    </div>
-
-    <!-- All tech tags -->
-    <div class="mt-12 pt-12 border-t border-border">
-      <h3 class="text-sm font-mono text-text-secondary uppercase tracking-wider mb-4">Stack</h3>
-      <div class="flex flex-wrap gap-2">
-        {tech.map((tag) => (
-          <span class="px-3 py-1.5 text-sm font-mono text-accent bg-accent/10 border border-accent/20 rounded-lg">
-            {tag}
-          </span>
+  <!-- Highlights / Metrics -->
+  {highlights.length > 0 && (
+    <section class="max-w-6xl mx-auto px-6 -mt-6 relative z-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {highlights.map((h) => (
+          <div class="bg-navy-light border border-border rounded-xl p-6 text-center hover:border-accent/30 transition-colors duration-200">
+            <span class="block text-3xl md:text-4xl font-extrabold text-accent mb-1">{h.value}</span>
+            <span class="text-sm text-text-secondary uppercase tracking-wider">{h.label}</span>
+          </div>
         ))}
       </div>
+    </section>
+  )}
+
+  <!-- Content Grid -->
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+      <!-- Main content (2 cols) -->
+      <div class="lg:col-span-2 flex flex-col gap-10">
+        <!-- Problem -->
+        <div class="relative bg-navy-light border-l-4 border-red-400/60 rounded-xl p-8 overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div class="relative">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold text-red-400">{t(lang, 'projects_page.problem')}</h2>
+            </div>
+            <div class="flex flex-col gap-3">
+              {problem.split('\n').map((p) => (
+                <p class="text-text-secondary leading-relaxed">{p}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Solution -->
+        <div class="relative bg-navy-light border-l-4 border-accent/60 rounded-xl p-8 overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div class="relative">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-accent" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold text-accent">{t(lang, 'projects_page.solution')}</h2>
+            </div>
+            <div class="flex flex-col gap-3">
+              {solution.split('\n').map((p) => (
+                <p class="text-text-secondary leading-relaxed">{p}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div class="relative bg-navy-light border-l-4 border-green-400/60 rounded-xl p-8 overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div class="relative">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold text-green-400">{t(lang, 'projects_page.result')}</h2>
+            </div>
+            <div class="flex flex-col gap-3">
+              {result.split('\n').map((p) => (
+                <p class="text-text-secondary leading-relaxed">{p}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar (1 col) -->
+      <aside class="flex flex-col gap-6">
+        <!-- Project info card -->
+        <div class="bg-navy-light border border-border rounded-xl p-6">
+          <h3 class="text-sm font-mono text-text-secondary uppercase tracking-wider mb-5">Info</h3>
+          <dl class="flex flex-col gap-4">
+            <div>
+              <dt class="text-xs text-text-secondary uppercase tracking-wider mb-1">{t(lang, 'projects_page.role')}</dt>
+              <dd class="text-sm text-text-primary font-medium">{role}</dd>
+            </div>
+            <div class="border-t border-border pt-4">
+              <dt class="text-xs text-text-secondary uppercase tracking-wider mb-1">{t(lang, 'projects_page.category')}</dt>
+              <dd class="text-sm text-text-primary font-medium">{category}</dd>
+            </div>
+            <div class="border-t border-border pt-4">
+              <dt class="text-xs text-text-secondary uppercase tracking-wider mb-1">{t(lang, 'projects_page.duration')}</dt>
+              <dd class="text-sm text-text-primary font-medium">{duration}</dd>
+            </div>
+            <div class="border-t border-border pt-4">
+              <dt class="text-xs text-text-secondary uppercase tracking-wider mb-1">{t(lang, 'projects_page.year')}</dt>
+              <dd class="text-sm text-text-primary font-medium">{year}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Stack card -->
+        <div class="bg-navy-light border border-border rounded-xl p-6">
+          <h3 class="text-sm font-mono text-text-secondary uppercase tracking-wider mb-4">{t(lang, 'projects_page.stack')}</h3>
+          <div class="flex flex-wrap gap-2">
+            {tech.map((tag) => (
+              <span class="px-3 py-1.5 text-xs font-mono text-accent bg-accent/10 border border-accent/20 rounded-lg">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Mobile screenshot -->
+        {imageMobile && (
+          <div class="bg-navy-light border border-border rounded-xl p-6">
+            <h3 class="text-sm font-mono text-text-secondary uppercase tracking-wider mb-4">Mobile</h3>
+            <div class="flex justify-center">
+              <div class="w-48 rounded-2xl overflow-hidden border-2 border-border shadow-lg">
+                <img
+                  src={imageMobile}
+                  alt={`${title} - Mobile`}
+                  class="w-full h-auto"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </aside>
     </div>
 
-    <!-- Back link -->
-    <div class="mt-12">
-      <a
-        href={getLocalizedPath('/projects', lang)}
-        class="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-accent transition-colors duration-200"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-        </svg>
-        {lang === 'en' ? 'Back to Projects' : lang === 'es' ? 'Volver a Proyectos' : 'Voltar para Projetos'}
-      </a>
-    </div>
+    <!-- Navigation between projects -->
+    <nav class="mt-16 pt-8 border-t border-border" aria-label="Project navigation">
+      <div class="flex items-center justify-between">
+        {prev ? (
+          <a
+            href={getLocalizedPath(`/projects/${prev.slug}`, lang)}
+            class="group flex items-center gap-3 text-text-secondary hover:text-accent transition-colors duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            <div class="text-left">
+              <span class="block text-xs uppercase tracking-wider">{t(lang, 'projects_page.prev')}</span>
+              <span class="block text-sm font-semibold text-text-primary group-hover:text-accent transition-colors duration-200">{prev.title}</span>
+            </div>
+          </a>
+        ) : (
+          <div />
+        )}
+
+        <a
+          href={getLocalizedPath('/projects', lang)}
+          class="hidden md:flex items-center gap-2 px-4 py-2 text-sm text-text-secondary border border-border rounded-lg hover:border-accent/40 hover:text-accent transition-colors duration-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM13 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z" />
+          </svg>
+          {t(lang, 'projects_page.title')}
+        </a>
+
+        {next ? (
+          <a
+            href={getLocalizedPath(`/projects/${next.slug}`, lang)}
+            class="group flex items-center gap-3 text-text-secondary hover:text-accent transition-colors duration-200"
+          >
+            <div class="text-right">
+              <span class="block text-xs uppercase tracking-wider">{t(lang, 'projects_page.next')}</span>
+              <span class="block text-sm font-semibold text-text-primary group-hover:text-accent transition-colors duration-200">{next.title}</span>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        ) : (
+          <div />
+        )}
+      </div>
+    </nav>
   </div>
 </BaseLayout>

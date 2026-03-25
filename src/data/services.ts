@@ -13,7 +13,7 @@ export interface Service {
 export const services: Service[] = [
   {
     slug: 'web-development',
-    icon: '🌐',
+    icon: 'globe',
     translations: {
       pt: {
         title: 'Desenvolvimento Web',
@@ -52,7 +52,7 @@ export const services: Service[] = [
   },
   {
     slug: 'mobile-development',
-    icon: '📱',
+    icon: 'smartphone',
     translations: {
       pt: {
         title: 'Desenvolvimento Mobile',
@@ -91,7 +91,7 @@ export const services: Service[] = [
   },
   {
     slug: 'api-backend',
-    icon: '⚙️',
+    icon: 'settings',
     translations: {
       pt: {
         title: 'API & Backend',
@@ -130,7 +130,7 @@ export const services: Service[] = [
   },
   {
     slug: 'consulting',
-    icon: '💡',
+    icon: 'lightbulb',
     translations: {
       pt: {
         title: 'Consultoria Técnica',
@@ -169,7 +169,7 @@ export const services: Service[] = [
   },
   {
     slug: 'automations',
-    icon: '🤖',
+    icon: 'bot',
     translations: {
       pt: {
         title: 'Automações & Integrações',

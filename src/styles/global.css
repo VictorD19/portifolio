@@ -7,13 +7,13 @@
 @import '@fontsource/inter/800.css';
 
 @theme {
-  --color-navy: #0a192f;
-  --color-navy-light: #112240;
-  --color-navy-dark: #020c1b;
-  --color-accent: #64ffda;
-  --color-text-primary: #ccd6f6;
-  --color-text-secondary: #8892b0;
-  --color-border: #1e3a5f;
+  --color-navy: #FAFAFA;
+  --color-navy-light: #FFFFFF;
+  --color-navy-dark: #F1F5F9;
+  --color-accent: #2563EB;
+  --color-text-primary: #09090B;
+  --color-text-secondary: #64748B;
+  --color-border: #E4E4E7;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
@@ -53,14 +53,31 @@
   transform: scale(0.95);
 }
 
-/* Pagefind dark theme overrides */
+@keyframes fade-slide {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility animate-fade-slide {
+  animation: fade-slide 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Pagefind light theme overrides */
 :root {
   --pagefind-ui-scale: 0.8;
-  --pagefind-ui-primary: #64ffda;
-  --pagefind-ui-text: #ccd6f6;
-  --pagefind-ui-background: #112240;
-  --pagefind-ui-border: #1e3a5f;
-  --pagefind-ui-tag: #0a192f;
+  --pagefind-ui-primary: #2563EB;
+  --pagefind-ui-text: #09090B;
+  --pagefind-ui-background: #FFFFFF;
+  --pagefind-ui-border: #E4E4E7;
+  --pagefind-ui-tag: #F1F5F9;
   --pagefind-ui-border-width: 1px;
   --pagefind-ui-border-radius: 8px;
   --pagefind-ui-font: 'Inter', system-ui, sans-serif;

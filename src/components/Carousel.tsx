@@ -51,7 +51,6 @@ export default function Carousel({
     el.scrollBy({ left: direction === 'left' ? -(itemWidth + gap) : itemWidth + gap, behavior: 'smooth' });
   };
 
-  // Mouse drag for desktop
   const onMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     dragStartX.current = e.pageX;
@@ -67,7 +66,6 @@ export default function Carousel({
 
   const onMouseUp = () => setIsDragging(false);
 
-  // Keyboard navigation
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
@@ -78,45 +76,16 @@ export default function Carousel({
     }
   };
 
-  const buttonBase: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    zIndex: 10,
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    border: `1px solid var(--color-border)`,
-    backgroundColor: 'var(--color-navy-light)',
-    color: 'var(--color-text-primary)',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'opacity 0.2s, background-color 0.2s',
-    fontSize: '18px',
-    lineHeight: 1,
-  };
-
   return (
-    <div
-      style={{ position: 'relative' }}
-      className={className}
-      role="region"
-      aria-label={label}
-    >
-      {/* Left arrow – desktop only via CSS */}
+    <div className={`relative ${className}`} role="region" aria-label={label}>
+      {/* Left arrow */}
       <button
         onClick={() => scrollBy('left')}
         disabled={!canScrollLeft}
         aria-label="Scroll left"
-        style={{
-          ...buttonBase,
-          left: '-20px',
-          opacity: canScrollLeft ? 1 : 0,
-          pointerEvents: canScrollLeft ? 'auto' : 'none',
-        }}
-        className="hidden md:flex"
+        className={`hidden md:flex absolute top-1/2 -translate-y-1/2 -left-5 z-10 w-10 h-10 rounded-full border border-border bg-navy-light text-text-primary items-center justify-center text-lg leading-none cursor-pointer transition-opacity duration-200 ${
+          canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
       >
         ‹
       </button>
@@ -131,53 +100,30 @@ export default function Carousel({
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseUp}
-        style={{
-          display: 'flex',
-          gap: `${gap}px`,
-          overflowX: 'auto',
-          scrollSnapType: 'x mandatory',
-          scrollBehavior: 'smooth',
-          cursor: isDragging ? 'grabbing' : 'grab',
-          paddingBottom: '8px',
-          outline: 'none',
-          // Hide scrollbar cross-browser
-          msOverflowStyle: 'none',
-          scrollbarWidth: 'none',
-        }}
-        // webkit scrollbar hidden via className + global CSS
-        className="carousel-track"
+        className={`flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 outline-none carousel-track ${
+          isDragging ? 'cursor-grabbing' : 'cursor-grab'
+        }`}
       >
         {childArray.map((child, i) => (
-          <div
-            key={i}
-            role="listitem"
-            style={{
-              scrollSnapAlign: 'start',
-              flexShrink: 0,
-            }}
-          >
+          <div key={i} role="listitem" className="snap-start shrink-0 w-72 md:w-80">
             {child}
           </div>
         ))}
       </div>
 
-      {/* Right arrow – desktop only */}
+      {/* Right arrow */}
       <button
         onClick={() => scrollBy('right')}
         disabled={!canScrollRight}
         aria-label="Scroll right"
-        style={{
-          ...buttonBase,
-          right: '-20px',
-          opacity: canScrollRight ? 1 : 0,
-          pointerEvents: canScrollRight ? 'auto' : 'none',
-        }}
-        className="hidden md:flex"
+        className={`hidden md:flex absolute top-1/2 -translate-y-1/2 -right-5 z-10 w-10 h-10 rounded-full border border-border bg-navy-light text-text-primary items-center justify-center text-lg leading-none cursor-pointer transition-opacity duration-200 ${
+          canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
       >
         ›
       </button>
 
-      <style>{`.carousel-track::-webkit-scrollbar { display: none; }`}</style>
+      <style>{`.carousel-track::-webkit-scrollbar { display: none; } .carousel-track { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
     </div>
   );
 }

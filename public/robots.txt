@@ -70,5 +70,4 @@ Allow: /
 User-agent: PetalBot
 Allow: /
 
-Sitemap: https://victorbertram.com/sitemap-index.xml
 Sitemap: https://victorbertram.com/sitemap.xml

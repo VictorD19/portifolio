@@ -67,6 +67,17 @@ const organizationSchema = {
   },
 };
 
+const webPageSchema = type !== 'article' ? {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: canonicalUrl,
+  inLanguage: lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en-US' : 'es-ES',
+  isPartOf: { '@type': 'WebSite', name: 'Victor Bertram', url: siteUrl },
+  author: { '@type': 'Person', name: 'Victor Bertram' },
+} : null;
+
 const articleSchema = type === 'article' && publishedDate ? {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -123,4 +134,5 @@ const articleSchema = type === 'article' && publishedDate ? {
 <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+{webPageSchema && <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />}
 {articleSchema && <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}

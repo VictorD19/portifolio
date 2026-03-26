@@ -61,10 +61,10 @@ PWA/TWA app with Bible challenges in multiple formats to strengthen Bible knowle
 
 ## Site Pages
 
-- Home: https://victorbertram.dev
-- Projects: https://victorbertram.dev/projects
-- About: https://victorbertram.dev/#about
-- Services: https://victorbertram.dev/#services
-- Contact: https://victorbertram.dev/#contact
+- Home: https://victorbertram.com
+- Projects: https://victorbertram.com/projects
+- About: https://victorbertram.com/#about
+- Services: https://victorbertram.com/#services
+- Contact: https://victorbertram.com/#contact
 
 The site is also accessible at https://victorbertram.com.br and is available in English, Portuguese, and Spanish.

@@ -22,7 +22,7 @@ const {
   publishedDate,
 } = Astro.props;
 
-const siteUrl = 'https://victorbertram.dev';
+const siteUrl = 'https://victorbertram.com';
 const canonicalUrl = canonical ?? `${siteUrl}${Astro.url.pathname}`;
 const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 

@@ -35,7 +35,7 @@ const href = lang === 'pt' ? `/projects/${slug}` : `/${lang}/projects/${slug}`;
       <img
         src={image}
         alt={title}
-        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
         decoding="async"
       />
@@ -44,7 +44,6 @@ const href = lang === 'pt' ? `/projects/${slug}` : `/${lang}/projects/${slug}`;
         <div class="text-5xl opacity-20 select-none">{'</>'}</div>
       </div>
     )}
-    <div class="absolute inset-0 bg-gradient-to-t from-navy-light/60 to-transparent"></div>
   </div>
 
   <!-- Content -->

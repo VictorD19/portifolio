@@ -35,7 +35,7 @@ export const projects: Project[] = [
   {
     slug: 'smartvoz',
     featured: true,
-    image: '/images/projects/discador-voip.png',
+    image: '/images/projects/smartvoz.png',
     imageMobile: '/images/projects/discador-voip-mobile.png',
     screenshots: [
       '/images/projects/smartvoz001.png',
@@ -88,7 +88,7 @@ export const projects: Project[] = [
   {
     slug: 'sistema-zapchat',
     featured: true,
-    image: '/images/projects/whatsapp-bots.png',
+    image: '/images/projects/sistemazapchat.png',
     imageMobile: '/images/projects/whatsapp-bots-mobile.png',
     screenshots: [
       '/images/projects/sistemazachat001.png',
@@ -140,7 +140,7 @@ export const projects: Project[] = [
     slug: 'desafios-biblicos',
     featured: true,
     badge: 'App',
-    image: '/images/projects/desafios-biblicos.png',
+    image: '/images/projects/desafiosbiblicos.png',
     imageMobile: '/images/projects/desafios-biblicos-mobile.png',
     screenshots: [
       '/images/projects/app001.png',

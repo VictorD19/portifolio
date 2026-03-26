@@ -1,0 +1,70 @@
+# Victor Bertram — Senior Full Stack Developer
+
+> Portfolio site of Victor Bertram, a Senior Full Stack Developer based in Chapeco, SC, Brazil.
+
+## About
+
+Victor Bertram is a Senior Full Stack Developer with expertise in Node.js, React, Next.js, .NET, TypeScript, and cloud infrastructure. Originally from Venezuela, he relocated to Brazil and transitioned into software development through self-taught learning and a Full Stack development course. He has experience leading teams of 150+ people and brings a strong business perspective to his technical work, combining software development with traffic management and digital marketing knowledge.
+
+He builds applications focused on performance, stability, and maintainability. His work spans SaaS platforms, mobile apps (PWA/TWA), automation systems, and AI-powered solutions.
+
+## Main Projects
+
+### SmartVoz (2024)
+MobileTech SaaS platform for selling phone plans with multi-level marketing up to 5 levels deep, automatic commission payments, interactive dashboards, and facial biometry registration via AWS Rekognition.
+- Tech: Next.js, Node.js, TypeScript, PostgreSQL, Sequelize, Redis, BullMQ, Asaas API, AWS, Docker, GitHub CI/CD, Tailwind CSS
+- Impact: 2,000+ active users, R$ 568k+ in transaction volume, 24,000+ active phone lines, R$ 47k+ in commissions distributed, 47% referral rate
+- Role: Full Stack Developer & Software Architect
+- URL: https://smartvoz.com.br
+
+### SistemaZapChat (2026)
+Multi-tenant SaaS platform focused on WhatsApp sales. Features integrated CRM, AI virtual assistants (GPT-4), knowledge bases, sales funnel tracking, mass messaging, contact extraction, group mentions, tagging, and user & company management.
+- Tech: Node.js, FastAPI, TypeScript, Next.js, React, Tailwind CSS, Zustand, PostgreSQL, Prisma, Redis, BullMQ, WebSocket, JWT, Zod, OpenAI, Evolution API, Docker, Nginx, MinIO, Cloudflare R2, Digital Ocean, GitHub Actions, Sentry
+- Impact: 80% closure and scheduling rate, 500k+ messages exchanged, 3x more leads collected
+- Role: Full Stack Developer & Product Owner
+- URL: https://sistemazapchat.com
+
+### Bible Challenges (2026)
+PWA/TWA app with Bible challenges in multiple formats to strengthen Bible knowledge in an interactive and gamified way. Features quizzes, categorized questions, daily challenges, rankings, and progression.
+- Tech: Next.js, NestJS, TypeScript, PostgreSQL, Vercel
+- Impact: 55+ organic users, 100% organic growth, zero marketing investment
+- Role: Full Stack Developer & Product Owner
+- URL: https://desafiosbiblicos.com.br
+
+## Services
+
+- Web Development: SaaS platforms, dashboards, landing pages, e-commerce, admin panels — built from scratch with scalable architecture
+- Mobile Development: PWA/TWA apps, Play Store and App Store publishing, offline mode, push notifications
+- Technical Consulting: System diagnostics, infrastructure cost optimization, technical mentoring, development workflow improvement
+- Automations & Integrations: End-to-end automation, system integration, AI-powered WhatsApp bots, automated dashboards and reporting
+
+## Core Technologies
+
+- Frontend: React, Next.js, Astro, Tailwind CSS, Zustand
+- Backend: Node.js, NestJS, FastAPI, .NET
+- Languages: TypeScript, JavaScript, Python, C#
+- Databases: PostgreSQL, Redis
+- ORMs: Prisma, Sequelize
+- Queue/Jobs: BullMQ
+- AI/ML: OpenAI (GPT-4), AWS Rekognition
+- DevOps: Docker, AWS, Digital Ocean, Vercel, Nginx, GitHub Actions, GitHub CI/CD
+- Storage: MinIO, Cloudflare R2
+- Monitoring: Sentry
+- Other: WebSocket, JWT, Zod, Evolution API
+
+## Contact
+
+- Email: bertramvictor8@gmail.com
+- Phone/WhatsApp: +55 49 99821-8294
+- GitHub: https://github.com/VictorD19
+- LinkedIn: https://linkedin.com/in/victord08
+
+## Site Pages
+
+- Home: https://victorbertram.dev
+- Projects: https://victorbertram.dev/projects
+- About: https://victorbertram.dev/#about
+- Services: https://victorbertram.dev/#services
+- Contact: https://victorbertram.dev/#contact
+
+The site is also accessible at https://victorbertram.com.br and is available in English, Portuguese, and Spanish.

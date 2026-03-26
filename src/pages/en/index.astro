@@ -4,7 +4,6 @@ import { t } from '../../i18n/config';
 import HeroSection from '../../components/home/HeroSection.astro';
 import AboutSection from '../../components/home/AboutSection.astro';
 import ProjectsSection from '../../components/home/ProjectsSection.astro';
-import BlogSection from '../../components/home/BlogSection.astro';
 import CTASection from '../../components/home/CTASection.astro';
 
 const lang = 'en' as const;
@@ -16,6 +15,5 @@ const description = t(lang, 'hero.bio');
   <HeroSection lang={lang} />
   <AboutSection lang={lang} />
   <ProjectsSection lang={lang} />
-  <BlogSection lang={lang} />
   <CTASection lang={lang} />
 </BaseLayout>

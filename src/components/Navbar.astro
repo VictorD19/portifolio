@@ -19,7 +19,6 @@ const navLinks = [
   { key: 'nav.experience', href: getLocalizedPath('/experience', lang) },
   { key: 'nav.projects', href: getLocalizedPath('/projects', lang) },
   { key: 'nav.services', href: getLocalizedPath('/services', lang) },
-  { key: 'nav.blog', href: getLocalizedPath('/blog', lang) },
 ];
 
 const mobileLinks = navLinks.map((l) => ({ href: l.href, label: t(lang, l.key) }));

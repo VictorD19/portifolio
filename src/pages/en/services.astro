@@ -10,87 +10,138 @@ const services = getServicesByLang(lang);
 const title = `${t(lang, 'services_page.title')} | Victor Bertram`;
 const description = t(lang, 'footer.services');
 
-const iconBg: Record<string, string> = {
-  'web-development': 'from-blue-100 to-blue-50',
-  'mobile-development': 'from-green-100 to-green-50',
-  'api-backend': 'from-purple-100 to-purple-50',
-  'consulting': 'from-yellow-100 to-yellow-50',
-  'automations': 'from-pink-100 to-pink-50',
-};
+const webMobile = services.filter((s) => ['web-development', 'mobile-development'].includes(s.slug));
+const consultingAutomation = services.filter((s) => ['consulting', 'automations'].includes(s.slug));
 ---
 
 <BaseLayout title={title} description={description} lang={lang}>
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-20 flex flex-col gap-24">
     <!-- Header -->
     <ScrollAnimation animation="slide-up">
-      <div class="mb-14">
+      <div>
         <p class="text-accent font-mono text-sm mb-2">~/services</p>
         <h1 class="text-4xl md:text-5xl font-extrabold text-text-primary mb-4">
           {t(lang, 'services_page.title')}
         </h1>
-        <p class="text-text-secondary text-lg max-w-2xl">
-          {t(lang, 'about.bio')}
-        </p>
       </div>
     </ScrollAnimation>
 
-    <!-- Services grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {services.map((service, index) => (
-        <ScrollAnimation animation="slide-up" delay={index * 80}>
-          <div class="group flex flex-col h-full bg-navy-light border border-border rounded-2xl overflow-hidden hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300">
-            <!-- Colored icon area -->
-            <div class={`flex items-center gap-4 p-6 bg-gradient-to-br ${iconBg[service.slug] ?? 'from-navy-dark/60 to-navy-light/40'}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-accent flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                {service.icon === 'globe' && <><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></>}
-                {service.icon === 'smartphone' && <><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></>}
-                {service.icon === 'settings' && <><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></>}
-                {service.icon === 'lightbulb' && <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" /></>}
-                {service.icon === 'bot' && <><path d="M12 8V4H8" /><rect width="16" height="12" x="4" y="8" rx="2" /><path d="M2 14h2" /><path d="M20 14h2" /><path d="M15 13v2" /><path d="M9 13v2" /></>}
-              </svg>
-              <h2 class="text-xl font-bold text-text-primary group-hover:text-accent transition-colors duration-200">
-                {service.title}
-              </h2>
-            </div>
+    <!-- Section 1: Web & Mobile Development -->
+    <section class="flex flex-col gap-10">
+      <ScrollAnimation animation="slide-up">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="h-px flex-1 bg-gradient-to-r from-accent/40 to-transparent"></div>
+          <span class="text-accent font-mono text-xs uppercase tracking-widest">Development</span>
+          <div class="h-px flex-1 bg-gradient-to-l from-accent/40 to-transparent"></div>
+        </div>
+        <p class="text-center text-text-secondary text-lg max-w-2xl mx-auto">
+          From zero to deploy — I create and architect web and mobile systems tailored to your business.
+        </p>
+      </ScrollAnimation>
 
-            <!-- Card body -->
-            <div class="flex flex-col flex-1 p-6 gap-4">
-              <p class="text-text-secondary text-sm leading-relaxed">
-                {service.description}
-              </p>
-
-              <!-- Feature list -->
-              <ul class="flex flex-col gap-2 flex-1">
-                {service.features.map((feature) => (
-                  <li class="flex items-start gap-2 text-sm text-text-secondary">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {webMobile.map((service, index) => (
+          <ScrollAnimation animation="slide-up" delay={index * 100}>
+            <div class="relative bg-navy-light border border-border rounded-2xl p-8 h-full hover:border-accent/40 transition-all duration-300">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+              <div class="relative">
+                <div class="flex items-center gap-4 mb-6">
+                  <div class="w-14 h-14 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      {service.icon === 'globe' && <><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></>}
+                      {service.icon === 'smartphone' && <><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></>}
                     </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+                  </div>
+                  <div>
+                    <h2 class="text-2xl font-bold text-text-primary">{service.title}</h2>
+                    <p class="text-text-secondary text-sm mt-1">{service.description}</p>
+                  </div>
+                </div>
 
-              <!-- CTA -->
-              <a
-                href="/en/contact"
-                class="mt-4 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-white"
-              >
-                {t(lang, 'services_page.cta')}
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </a>
+                <ul class="flex flex-col gap-3 mb-8">
+                  {service.features.map((feature) => (
+                    <li class="flex items-start gap-3 text-sm text-text-secondary">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href="/en/contact"
+                  class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200"
+                >
+                  {t(lang, 'services_page.cta')}
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </a>
+              </div>
             </div>
-          </div>
-        </ScrollAnimation>
-      ))}
-    </div>
-  </section>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </section>
+
+    <!-- Section 2: Consulting & Automations -->
+    <section class="flex flex-col gap-10">
+      <ScrollAnimation animation="slide-up">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="h-px flex-1 bg-gradient-to-r from-accent/40 to-transparent"></div>
+          <span class="text-accent font-mono text-xs uppercase tracking-widest">Strategy & Optimization</span>
+          <div class="h-px flex-1 bg-gradient-to-l from-accent/40 to-transparent"></div>
+        </div>
+        <p class="text-center text-text-secondary text-lg max-w-2xl mx-auto">
+          I identify bottlenecks, eliminate manual processes, and put your team on the right track.
+        </p>
+      </ScrollAnimation>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {consultingAutomation.map((service, index) => (
+          <ScrollAnimation animation="slide-up" delay={index * 100}>
+            <div class="relative bg-navy-light border border-border rounded-2xl p-8 h-full hover:border-accent/40 transition-all duration-300">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+              <div class="relative">
+                <div class="flex items-center gap-4 mb-6">
+                  <div class="w-14 h-14 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      {service.icon === 'lightbulb' && <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" /></>}
+                      {service.icon === 'bot' && <><path d="M12 8V4H8" /><rect width="16" height="12" x="4" y="8" rx="2" /><path d="M2 14h2" /><path d="M20 14h2" /><path d="M15 13v2" /><path d="M9 13v2" /></>}
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 class="text-2xl font-bold text-text-primary">{service.title}</h2>
+                    <p class="text-text-secondary text-sm mt-1">{service.description}</p>
+                  </div>
+                </div>
+
+                <ul class="flex flex-col gap-3 mb-8">
+                  {service.features.map((feature) => (
+                    <li class="flex items-start gap-3 text-sm text-text-secondary">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href="/en/contact"
+                  class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-accent rounded-lg hover:bg-accent/90 transition-colors duration-200"
+                >
+                  {t(lang, 'services_page.cta')}
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </section>
+  </div>
 </BaseLayout>

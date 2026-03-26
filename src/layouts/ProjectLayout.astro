@@ -25,6 +25,7 @@ interface Props {
   duration: string;
   category: string;
   highlights: ProjectHighlight[];
+  screenshots?: string[];
 }
 
 const {
@@ -44,6 +45,7 @@ const {
   duration,
   category,
   highlights,
+  screenshots,
 } = Astro.props;
 
 const { prev, next } = getAdjacentProjects(slug, lang);
@@ -52,18 +54,9 @@ const { prev, next } = getAdjacentProjects(slug, lang);
 <BaseLayout title={`${title} | Victor Bertram`} description={description} lang={lang}>
   <!-- Banner -->
   <section class="relative h-72 md:h-96 bg-navy-dark overflow-hidden">
-    {image ? (
-      <img
-        src={image}
-        alt={title}
-        class="w-full h-full object-cover opacity-60"
-        loading="eager"
-      />
-    ) : (
-      <div class="flex items-center justify-center h-full text-8xl opacity-10 select-none">
-        {'</>'}
-      </div>
-    )}
+    <div class="flex items-center justify-center h-full text-8xl opacity-10 select-none">
+      {'</>'}
+    </div>
     <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
 
     <!-- Banner content -->
@@ -124,6 +117,123 @@ const { prev, next } = getAdjacentProjects(slug, lang);
         ))}
       </div>
     </section>
+  )}
+
+  <!-- Screenshots Gallery -->
+  {screenshots && screenshots.length > 0 && (
+    <section class="max-w-6xl mx-auto px-6 mt-12">
+      <h2 class="text-sm font-mono text-text-secondary uppercase tracking-wider mb-6">Screenshots</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        {screenshots.map((src, i) => (
+          <button
+            class="bg-navy-light border border-border rounded-xl p-3 hover:border-accent/30 transition-colors duration-200 cursor-pointer"
+            data-lightbox-trigger
+            data-index={i}
+          >
+            <div class="rounded-lg overflow-hidden">
+              <img
+                src={src}
+                alt={`${title} - Screenshot ${i + 1}`}
+                class="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div
+      id="lightbox"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 backdrop-blur-sm"
+    >
+      <button
+        id="lightbox-close"
+        class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors duration-200"
+        aria-label="Fechar"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      <button
+        id="lightbox-prev"
+        class="absolute left-4 z-10 w-10 h-10 flex items-center justify-center text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors duration-200"
+        aria-label="Anterior"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </button>
+
+      <button
+        id="lightbox-next"
+        class="absolute right-4 z-10 w-10 h-10 flex items-center justify-center text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors duration-200"
+        aria-label="Próximo"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+      </button>
+
+      <div class="flex items-center justify-center w-full px-16">
+        <img
+          id="lightbox-img"
+          src=""
+          alt=""
+          class="max-h-[90vh] max-w-[90vw] w-auto rounded-lg shadow-2xl"
+        />
+      </div>
+
+      <div id="lightbox-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm font-mono"></div>
+    </div>
+
+    <script define:vars={{ screenshots }}>
+      document.addEventListener('DOMContentLoaded', () => {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        const images = screenshots;
+        let current = 0;
+
+        function show(index) {
+          current = (index + images.length) % images.length;
+          lightboxImg.src = images[current];
+          lightboxImg.alt = `Screenshot ${current + 1}`;
+          lightboxCounter.textContent = `${current + 1} / ${images.length}`;
+          lightbox.classList.remove('hidden');
+          lightbox.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function close() {
+          lightbox.classList.add('hidden');
+          lightbox.classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('[data-lightbox-trigger]').forEach((btn) => {
+          btn.addEventListener('click', () => show(parseInt(btn.dataset.index)));
+        });
+
+        document.getElementById('lightbox-close').addEventListener('click', close);
+        document.getElementById('lightbox-prev').addEventListener('click', () => show(current - 1));
+        document.getElementById('lightbox-next').addEventListener('click', () => show(current + 1));
+
+        lightbox.addEventListener('click', (e) => {
+          if (e.target === lightbox) close();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (lightbox.classList.contains('hidden')) return;
+          if (e.key === 'Escape') close();
+          if (e.key === 'ArrowLeft') show(current - 1);
+          if (e.key === 'ArrowRight') show(current + 1);
+        });
+      });
+    </script>
   )}
 
   <!-- Content Grid -->

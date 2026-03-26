@@ -191,7 +191,7 @@ const { prev, next } = getAdjacentProjects(slug, lang);
     </div>
 
     <script define:vars={{ screenshots }}>
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('astro:page-load', () => {
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxCounter = document.getElementById('lightbox-counter');

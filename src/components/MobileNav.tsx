@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 
 interface NavLink {
   href: string;
@@ -90,56 +91,59 @@ export default function MobileNav({ links, ctaHref, ctaLabel, lang }: MobileNavP
         />
       </button>
 
-      {/* Full-screen overlay */}
-      <div
-        id="mobile-nav-overlay"
-        ref={menuRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobile navigation"
-        className={`fixed inset-0 z-[9999] bg-navy-light flex flex-col p-6 transition-opacity duration-300 ease-in-out ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-      >
-        {/* Close button */}
-        <div className="flex justify-end mb-12">
-          <button
-            onClick={close}
-            aria-label="Close menu"
-            className="bg-transparent border border-border text-text-primary rounded-lg px-4 py-2 cursor-pointer text-sm hover:border-accent hover:text-accent transition-colors"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Nav links */}
-        <nav className="flex-1">
-          <ul className="list-none m-0 p-0 flex flex-col gap-2">
-            {links.map((link, i) => (
-              <li key={link.href}>
-                <a
-                  ref={i === 0 ? firstFocusRef : undefined}
-                  href={link.href}
-                  onClick={close}
-                  className="block py-4 text-2xl font-bold text-text-primary no-underline border-b border-border transition-all duration-200 hover:text-accent hover:pl-2"
-                >
-                  <span className="text-accent font-mono text-sm mr-3">
-                    0{i + 1}.
-                  </span>
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* CTA button */}
-        <a
-          href={ctaHref}
-          onClick={close}
-          className="block mt-8 py-4 text-center border-2 border-accent text-accent rounded-lg font-semibold text-base no-underline transition-colors duration-200 hover:bg-accent/10"
+      {/* Full-screen overlay (portal to body to escape backdrop-filter containing block) */}
+      {typeof document !== 'undefined' && createPortal(
+        <div
+          id="mobile-nav-overlay"
+          ref={menuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+          className={`fixed inset-0 z-[9999] bg-navy-light flex flex-col p-6 transition-opacity duration-300 ease-in-out ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         >
-          {ctaLabel}
-        </a>
-      </div>
+          {/* Close button */}
+          <div className="flex justify-end mb-12">
+            <button
+              onClick={close}
+              aria-label="Close menu"
+              className="bg-transparent border border-border text-text-primary rounded-lg px-4 py-2 cursor-pointer text-sm hover:border-accent hover:text-accent transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Nav links */}
+          <nav className="flex-1">
+            <ul className="list-none m-0 p-0 flex flex-col gap-2">
+              {links.map((link, i) => (
+                <li key={link.href}>
+                  <a
+                    ref={i === 0 ? firstFocusRef : undefined}
+                    href={link.href}
+                    onClick={close}
+                    className="block py-4 text-2xl font-bold text-text-primary no-underline border-b border-border transition-all duration-200 hover:text-accent hover:pl-2"
+                  >
+                    <span className="text-accent font-mono text-sm mr-3">
+                      0{i + 1}.
+                    </span>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* CTA button */}
+          <a
+            href={ctaHref}
+            onClick={close}
+            className="block mt-8 py-4 text-center border-2 border-accent text-accent rounded-lg font-semibold text-base no-underline transition-colors duration-200 hover:bg-accent/10"
+          >
+            {ctaLabel}
+          </a>
+        </div>,
+        document.body
+      )}
     </>
   );
 }
